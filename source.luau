@@ -943,8 +943,8 @@ function Orvion:CreateWindow(config)
     SearchOverlay.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
     SearchOverlay.BackgroundTransparency = 0.05
     SearchOverlay.BorderSizePixel = 0
-    SearchOverlay.Size = UDim2.new(1, 0, 1, -39)
-    SearchOverlay.Position = UDim2.new(0, 0, 0, 39)
+    SearchOverlay.Size = UDim2.new(1, 0, 1, -83)
+    SearchOverlay.Position = UDim2.new(0, 0, 0, 83)
     SearchOverlay.ZIndex = 20
     SearchOverlay.Visible = false
     SearchOverlay.Parent = Main
@@ -1343,8 +1343,8 @@ function Orvion:CreateWindow(config)
     TabFrame.BackgroundTransparency = 0.999
     TabFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabFrame.BorderSizePixel = 0
-    TabFrame.Position = UDim2.new(0, 9, 0, 39)
-    TabFrame.Size = UDim2.new(0, 120, 1, -39)
+    TabFrame.Position = UDim2.new(0, 0, 0, 39)
+    TabFrame.Size = UDim2.new(1, 0, 0, 44)
     TabFrame.Name = "TabFrame"
     TabFrame.Parent = Main
 
@@ -1362,7 +1362,9 @@ function Orvion:CreateWindow(config)
     TabScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabScroll.BorderSizePixel = 0
     TabScroll.Position = UDim2.new(0, 0, 0, 36)
-    TabScroll.Size = UDim2.new(1, 0, 1, -86)
+    TabScroll.Size = UDim2.new(1, -8, 1, 0)
+    TabScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
+    TabScroll.ScrollingDirection = Enum.ScrollingDirection.X
     TabScroll.Name = "TabScroll"
     TabScroll.Parent = TabFrame
 
@@ -1821,8 +1823,8 @@ function Orvion:CreateWindow(config)
     ContentFrame.BackgroundTransparency = 0.999
     ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ContentFrame.BorderSizePixel = 0
-    ContentFrame.Position = UDim2.new(0, 138, 0, 39)
-    ContentFrame.Size = UDim2.new(1, -147, 1, -39)
+    ContentFrame.Position = UDim2.new(0, 0, 0, 83)
+    ContentFrame.Size = UDim2.new(1, 0, 1, -83)
     ContentFrame.Name = "ContentFrame"
     ContentFrame.Parent = Main
 
@@ -4502,28 +4504,38 @@ function Orvion:CreateWindow(config)
         TabCount = TabCount + 1
         local Tab = Instance.new("Frame")
         Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Tab.BackgroundTransparency = 0.999
+        Tab.BackgroundTransparency = 0.85
         Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Tab.BorderSizePixel = 0
-        Tab.Size = UDim2.new(1, 0, 0, 30)
+        Tab.AutomaticSize = Enum.AutomaticSize.X
+        Tab.Size = UDim2.new(0, 0, 1, -10)
         Tab.LayoutOrder = isConfigTab and 999 or TabCount
         Tab.Name = "Tab"
         Tab.Parent = TabScroll
 
         local TabCorner = Instance.new("UICorner")
-        TabCorner.CornerRadius = UDim.new(0, 4)
+        TabCorner.CornerRadius = UDim.new(1, 0)
         TabCorner.Parent = Tab
+
+        -- Pill padding
+        local TabPad = Instance.new("UIPadding")
+        TabPad.PaddingLeft = UDim.new(0, 14)
+        TabPad.PaddingRight = UDim.new(0, 14)
+        TabPad.Parent = Tab
+
+        -- Pill horizontal layout
+        local PillLayout = Instance.new("UIListLayout")
+        PillLayout.FillDirection = Enum.FillDirection.Horizontal
+        PillLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+        PillLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        PillLayout.Padding = UDim.new(0, 6)
+        PillLayout.Parent = Tab
 
         local TabButton = Instance.new("TextButton")
         TabButton.ZIndex = 10
         TabButton.Font = Enum.Font.GothamBold
         TabButton.Text = ""
-        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        TabButton.TextSize = 14
-        TabButton.TextXAlignment = Enum.TextXAlignment.Left
-        TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TabButton.BackgroundTransparency = 0.999
-        TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TabButton.BackgroundTransparency = 1
         TabButton.BorderSizePixel = 0
         TabButton.Size = UDim2.new(1, 0, 1, 0)
         TabButton.Name = "TabButton"
@@ -4539,8 +4551,9 @@ function Orvion:CreateWindow(config)
         TabNameLabel.BackgroundTransparency = 0.999
         TabNameLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabNameLabel.BorderSizePixel = 0
-        TabNameLabel.Size = UDim2.new(1, 0, 1, 0)
-        TabNameLabel.Position = UDim2.new(0, iconId and iconId ~= "" and 30 or 10, 0, 0)
+        TabNameLabel.AutomaticSize = Enum.AutomaticSize.X
+        TabNameLabel.Size = UDim2.new(0, 0, 1, 0)
+        TabNameLabel.LayoutOrder = 2
         TabNameLabel.Name = "TabName"
         TabNameLabel.Parent = Tab
 
@@ -4548,9 +4561,10 @@ function Orvion:CreateWindow(config)
         FeatureImg.Image = iconId or ""
         FeatureImg.BackgroundTransparency = 1
         FeatureImg.BorderSizePixel = 0
-        FeatureImg.Position = UDim2.new(0, 9, 0, 7)
+        FeatureImg.Position = UDim2.new(0, 0, 0, 0)
         FeatureImg.Size = UDim2.new(0, 16, 0, 16)
         FeatureImg.Visible = iconId ~= nil and iconId ~= ""
+        FeatureImg.LayoutOrder = 1
         FeatureImg.Name = "FeatureImg"
         FeatureImg.Parent = Tab
 
@@ -4560,8 +4574,9 @@ function Orvion:CreateWindow(config)
         ChooseFrame.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
         ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
-        ChooseFrame.Position = UDim2.new(0, 0, 0, 9)
-        ChooseFrame.Size = UDim2.new(0, 3, 0, 12)
+        ChooseFrame.AnchorPoint = Vector2.new(0, 1)
+        ChooseFrame.Position = UDim2.new(0, 0, 1, 0)
+        ChooseFrame.Size = UDim2.new(1, 0, 0, 2)
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Tab
         ChooseFrame.Visible = false
