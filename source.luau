@@ -2630,10 +2630,11 @@ function Orvion:CreateWindow(config)
         local function ToggleDropdown()
             dropdownData.Open = not dropdownData.Open
             if dropdownData.Open then
-                local cfW    = ContentFrame.AbsoluteSize.X
+                local cfW    = Main.AbsoluteSize.X
+                if cfW < 10 then cfW = 300 end
                 local halfCF = math.floor(cfW / 2)
                 local rightW = cfW - halfCF - 4
-                local targetH = math.floor(Main.AbsoluteSize.Y - 16)
+                local targetH = math.min(200, math.floor(Main.AbsoluteSize.Y - 16))
                 DropdownList.Position = UDim2.new(0, halfCF + rightW, 0, 8)
                 DropdownList.Size = UDim2.new(0, 0, 0, targetH)
                 DropdownList.Visible = true
@@ -2672,7 +2673,8 @@ function Orvion:CreateWindow(config)
 
 
             else
-                local cfW3 = ContentFrame.AbsoluteSize.X
+                local cfW3 = Main.AbsoluteSize.X
+                if cfW3 < 10 then cfW3 = 300 end
                 local halfCF3 = math.floor(cfW3 / 2)
                 local rightW3 = cfW3 - halfCF3 - 4
                 ResetSearch()
