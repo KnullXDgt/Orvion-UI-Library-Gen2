@@ -937,101 +937,6 @@ function Orvion:CreateWindow(config)
     Main.Name = "Main"
     Main.Parent = DropShadow
 
-    -- ====== SEARCH OVERLAY ======
-    local SearchOverlay = Instance.new("Frame")
-    SearchOverlay.Name = "SearchOverlay"
-    SearchOverlay.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
-    SearchOverlay.BackgroundTransparency = 0.05
-    SearchOverlay.BorderSizePixel = 0
-    SearchOverlay.Size = UDim2.new(1, 0, 1, -83)
-    SearchOverlay.Position = UDim2.new(0, 0, 0, 83)
-    SearchOverlay.ZIndex = 20
-    SearchOverlay.Visible = false
-    SearchOverlay.Parent = Main
-
-    local SearchInputFrame = Instance.new("Frame")
-    SearchInputFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
-    SearchInputFrame.BackgroundTransparency = 0.1
-    SearchInputFrame.BorderSizePixel = 0
-    SearchInputFrame.Size = UDim2.new(1, -48, 0, 40)
-    SearchInputFrame.Position = UDim2.new(0, 12, 0, 12)
-    SearchInputFrame.ZIndex = 21
-    SearchInputFrame.Parent = SearchOverlay
-    Instance.new("UICorner", SearchInputFrame).CornerRadius = UDim.new(0, 8)
-
-    local SearchTextBox = Instance.new("TextBox")
-    SearchTextBox.Font = Enum.Font.GothamBold
-    SearchTextBox.PlaceholderText = "Search features..."
-    SearchTextBox.Text = ""
-    SearchTextBox.TextSize = 13
-    SearchTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SearchTextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 120)
-    SearchTextBox.BackgroundTransparency = 1
-    SearchTextBox.BorderSizePixel = 0
-    SearchTextBox.Size = UDim2.new(1, -12, 1, 0)
-    SearchTextBox.Position = UDim2.new(0, 12, 0, 0)
-    SearchTextBox.ZIndex = 22
-    SearchTextBox.ClearTextOnFocus = false
-    SearchTextBox.Parent = SearchInputFrame
-
-    local SearchCloseBtn = Instance.new("TextButton")
-    SearchCloseBtn.Text = ""
-    SearchCloseBtn.BackgroundTransparency = 0.999
-    SearchCloseBtn.BorderSizePixel = 0
-    SearchCloseBtn.Size = UDim2.new(0, 30, 0, 40)
-    SearchCloseBtn.Position = UDim2.new(1, -36, 0, 12)
-    SearchCloseBtn.ZIndex = 22
-    SearchCloseBtn.Parent = SearchOverlay
-    local SearchCloseIcon = Instance.new("ImageLabel")
-    SearchCloseIcon.Image = "rbxassetid://9886659671"
-    SearchCloseIcon.BackgroundTransparency = 1
-    SearchCloseIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-    SearchCloseIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    SearchCloseIcon.Size = UDim2.new(0, 16, 0, 16)
-    SearchCloseIcon.ImageTransparency = 0.2
-    SearchCloseIcon.Parent = SearchCloseBtn
-
-    local searchActive = false
-    local currentSearchContent = nil
-
-    local function applySearch(query)
-        if not currentSearchContent then return end
-        query = query:lower()
-        for _, child in ipairs(currentSearchContent:GetChildren()) do
-            if child:IsA("Frame") and child.Name == "Collapsible" then
-                local hdr = child:FindFirstChildWhichIsA("TextButton")
-                if hdr then
-                    local title = hdr.Text:lower():gsub("^%s+","")
-                    child.Visible = query == "" or title:find(query,1,true) ~= nil
-                end
-            end
-        end
-    end
-
-    local function openSearch()
-        searchActive = true
-        SearchOverlay.Visible = true
-        SearchBtnIcon.ImageColor3 = Color3.fromRGB(150,150,255)
-        task.delay(0.05, function() SearchTextBox:CaptureFocus() end)
-    end
-
-    local function closeSearch()
-        searchActive = false
-        SearchOverlay.Visible = false
-        SearchTextBox.Text = ""
-        SearchBtnIcon.ImageColor3 = Color3.fromRGB(255,255,255)
-        SearchTextBox:ReleaseFocus()
-        applySearch("")
-    end
-
-    -- connections wired below after SearchBtn is created
-
-    Orvion._setSearchContent = function(cf)
-        currentSearchContent = cf
-        if searchActive then applySearch(SearchTextBox.Text) end
-    end
-
-
     local UICorner = Instance.new("UICorner")
     UICorner.Parent = Main
 
@@ -1271,35 +1176,7 @@ function Orvion:CreateWindow(config)
     MinIcon.Size = UDim2.new(1, -9, 1, -9)
     MinIcon.Parent = Min
 
-    -- ====== SEARCH BUTTON ======
-    local SearchBtn = Instance.new("TextButton")
-    SearchBtn.Text = ""
-    SearchBtn.AnchorPoint = Vector2.new(1, 0.5)
-    SearchBtn.BackgroundTransparency = 0.999
-    SearchBtn.BorderSizePixel = 0
-    SearchBtn.Position = UDim2.new(1, -76, 0.5, 0)
-    SearchBtn.Size = UDim2.new(0, 25, 0, 25)
-    SearchBtn.Name = "SearchBtn"
-    SearchBtn.Parent = Top
 
-    local SearchBtnIcon = Instance.new("ImageLabel")
-    SearchBtnIcon.Image = "rbxassetid://121018724060431"
-    SearchBtnIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-    SearchBtnIcon.BackgroundTransparency = 0.999
-    SearchBtnIcon.BorderSizePixel = 0
-    SearchBtnIcon.ImageTransparency = 0.2
-    SearchBtnIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    SearchBtnIcon.Size = UDim2.new(1, -8, 1, -8)
-    SearchBtnIcon.Parent = SearchBtn
-
-    -- Wire search events (SearchBtn now declared)
-    SearchBtn.Activated:Connect(function()
-        if searchActive then closeSearch() else openSearch() end
-    end)
-    SearchCloseBtn.Activated:Connect(closeSearch)
-    SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-        applySearch(SearchTextBox.Text)
-    end)
 
     local ResizeHandle = nil
     if Resizable then
@@ -1343,8 +1220,8 @@ function Orvion:CreateWindow(config)
     TabFrame.BackgroundTransparency = 0.999
     TabFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabFrame.BorderSizePixel = 0
-    TabFrame.Position = UDim2.new(0, 0, 0, 39)
-    TabFrame.Size = UDim2.new(1, 0, 0, 44)
+    TabFrame.Position = UDim2.new(0, 9, 0, 39)
+    TabFrame.Size = UDim2.new(0, 120, 1, -39)
     TabFrame.Name = "TabFrame"
     TabFrame.Parent = Main
 
@@ -1362,9 +1239,7 @@ function Orvion:CreateWindow(config)
     TabScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabScroll.BorderSizePixel = 0
     TabScroll.Position = UDim2.new(0, 0, 0, 36)
-    TabScroll.Size = UDim2.new(1, -8, 1, 0)
-    TabScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
-    TabScroll.ScrollingDirection = Enum.ScrollingDirection.X
+    TabScroll.Size = UDim2.new(1, 0, 1, -86)
     TabScroll.Name = "TabScroll"
     TabScroll.Parent = TabFrame
 
@@ -1823,8 +1698,8 @@ function Orvion:CreateWindow(config)
     ContentFrame.BackgroundTransparency = 0.999
     ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ContentFrame.BorderSizePixel = 0
-    ContentFrame.Position = UDim2.new(0, 0, 0, 83)
-    ContentFrame.Size = UDim2.new(1, 0, 1, -83)
+    ContentFrame.Position = UDim2.new(0, 138, 0, 39)
+    ContentFrame.Size = UDim2.new(1, -147, 1, -39)
     ContentFrame.Name = "ContentFrame"
     ContentFrame.Parent = Main
 
@@ -4504,38 +4379,28 @@ function Orvion:CreateWindow(config)
         TabCount = TabCount + 1
         local Tab = Instance.new("Frame")
         Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Tab.BackgroundTransparency = 0.85
+        Tab.BackgroundTransparency = 0.999
         Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Tab.BorderSizePixel = 0
-        Tab.AutomaticSize = Enum.AutomaticSize.X
-        Tab.Size = UDim2.new(0, 0, 1, -10)
+        Tab.Size = UDim2.new(1, 0, 0, 30)
         Tab.LayoutOrder = isConfigTab and 999 or TabCount
         Tab.Name = "Tab"
         Tab.Parent = TabScroll
 
         local TabCorner = Instance.new("UICorner")
-        TabCorner.CornerRadius = UDim.new(1, 0)
+        TabCorner.CornerRadius = UDim.new(0, 4)
         TabCorner.Parent = Tab
-
-        -- Pill padding
-        local TabPad = Instance.new("UIPadding")
-        TabPad.PaddingLeft = UDim.new(0, 14)
-        TabPad.PaddingRight = UDim.new(0, 14)
-        TabPad.Parent = Tab
-
-        -- Pill horizontal layout
-        local PillLayout = Instance.new("UIListLayout")
-        PillLayout.FillDirection = Enum.FillDirection.Horizontal
-        PillLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-        PillLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        PillLayout.Padding = UDim.new(0, 6)
-        PillLayout.Parent = Tab
 
         local TabButton = Instance.new("TextButton")
         TabButton.ZIndex = 10
         TabButton.Font = Enum.Font.GothamBold
         TabButton.Text = ""
-        TabButton.BackgroundTransparency = 1
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TabButton.TextSize = 14
+        TabButton.TextXAlignment = Enum.TextXAlignment.Left
+        TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TabButton.BackgroundTransparency = 0.999
+        TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButton.BorderSizePixel = 0
         TabButton.Size = UDim2.new(1, 0, 1, 0)
         TabButton.Name = "TabButton"
@@ -4551,9 +4416,8 @@ function Orvion:CreateWindow(config)
         TabNameLabel.BackgroundTransparency = 0.999
         TabNameLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabNameLabel.BorderSizePixel = 0
-        TabNameLabel.AutomaticSize = Enum.AutomaticSize.X
-        TabNameLabel.Size = UDim2.new(0, 0, 1, 0)
-        TabNameLabel.LayoutOrder = 2
+        TabNameLabel.Size = UDim2.new(1, 0, 1, 0)
+        TabNameLabel.Position = UDim2.new(0, iconId and iconId ~= "" and 30 or 10, 0, 0)
         TabNameLabel.Name = "TabName"
         TabNameLabel.Parent = Tab
 
@@ -4561,10 +4425,9 @@ function Orvion:CreateWindow(config)
         FeatureImg.Image = iconId or ""
         FeatureImg.BackgroundTransparency = 1
         FeatureImg.BorderSizePixel = 0
-        FeatureImg.Position = UDim2.new(0, 0, 0, 0)
+        FeatureImg.Position = UDim2.new(0, 9, 0, 7)
         FeatureImg.Size = UDim2.new(0, 16, 0, 16)
         FeatureImg.Visible = iconId ~= nil and iconId ~= ""
-        FeatureImg.LayoutOrder = 1
         FeatureImg.Name = "FeatureImg"
         FeatureImg.Parent = Tab
 
@@ -4574,9 +4437,8 @@ function Orvion:CreateWindow(config)
         ChooseFrame.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
         ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
-        ChooseFrame.AnchorPoint = Vector2.new(0, 1)
-        ChooseFrame.Position = UDim2.new(0, 0, 1, 0)
-        ChooseFrame.Size = UDim2.new(1, 0, 0, 2)
+        ChooseFrame.Position = UDim2.new(0, 0, 0, 9)
+        ChooseFrame.Size = UDim2.new(0, 3, 0, 12)
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Tab
         ChooseFrame.Visible = false
@@ -4642,7 +4504,6 @@ function Orvion:CreateWindow(config)
             function()
                 if Orvion._activeDropdownClose then Orvion._activeDropdownClose() end
                 CircleClick(TabButton, Mouse.X, Mouse.Y)
-                if Orvion._setSearchContent then Orvion._setSearchContent(ContentFrame) end
                 SwitchToTab()
             end
         )
