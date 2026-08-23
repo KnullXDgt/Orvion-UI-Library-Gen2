@@ -1257,6 +1257,7 @@ function Orvion:CreateWindow(config)
         ResizeHandle.BorderSizePixel = 0
         ResizeHandle.Size = UDim2.new(0, 20, 0, 20)
         ResizeHandle.Position = UDim2.new(1, -20, 1, -20)
+        ResizeHandle.ZIndex = 100
         ResizeHandle.AutoButtonColor = false
         ResizeHandle.Parent = Main
 
