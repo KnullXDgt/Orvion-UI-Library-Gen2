@@ -1238,7 +1238,7 @@ function Orvion:CreateWindow(config)
     TabScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabScroll.BorderSizePixel = 0
     TabScroll.Position = UDim2.new(0, 0, 0, 36)
-    TabScroll.Size = UDim2.new(1, 0, 1, -86)
+    TabScroll.Size = UDim2.new(1, 0, 1, -36)
     TabScroll.Name = "TabScroll"
     TabScroll.Parent = TabFrame
 
@@ -4798,7 +4798,8 @@ function Orvion:CreateWindow(config)
         if not tabContainer or not tabContainer:IsA("Frame") then return end
         local LP = game:GetService("Players").LocalPlayer
         local WelcomeCard = Instance.new("Frame")
-        WelcomeCard.BackgroundTransparency = 1
+        WelcomeCard.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+        WelcomeCard.BackgroundTransparency = 0.935
         WelcomeCard.BorderSizePixel = 0
         WelcomeCard.Size = UDim2.new(1, 0, 0, 88)
         WelcomeCard.LayoutOrder = 0
