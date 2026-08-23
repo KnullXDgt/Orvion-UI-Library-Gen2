@@ -934,14 +934,12 @@ function Orvion:CreateWindow(config)
     Main.Position = UDim2.new(0.5, 0, 0.5, 0)
     Main.Size = UDim2.new(1, -47, 1, -47)
     Main.Name = "Main"
-    Main.Parent = DropShadow
-    -- ====== HEADER SEARCH BAR (slide-in, Rayfield style) ======
-    -- Forward declare SearchBtnIcon for upvalue capture
+    -- Forward declares for search (upvalue safety)
     local SearchBtnIcon = nil
-    -- Forward refs for tween targets (assigned later without local)
     local _TabFrame_ref = nil
     local _ContentFrame_ref = nil
-
+    Main.Parent = DropShadow
+    -- SearchHolder (Rayfield slide-in style)
     local searchHolder = Instance.new("Frame")
     searchHolder.Name = "SearchHolder"
     searchHolder.BackgroundTransparency = 1
@@ -951,7 +949,6 @@ function Orvion:CreateWindow(config)
     searchHolder.ZIndex = 15
     searchHolder.ClipsDescendants = true
     searchHolder.Parent = Main
-
     local searchCard = Instance.new("Frame")
     searchCard.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     searchCard.BackgroundTransparency = 0.93
@@ -961,7 +958,6 @@ function Orvion:CreateWindow(config)
     searchCard.ZIndex = 16
     searchCard.Parent = searchHolder
     Instance.new("UICorner", searchCard).CornerRadius = UDim.new(0, 6)
-
     local searchIconHint = Instance.new("ImageLabel")
     searchIconHint.Image = "rbxassetid://121018724060431"
     searchIconHint.BackgroundTransparency = 1
@@ -971,7 +967,6 @@ function Orvion:CreateWindow(config)
     searchIconHint.ImageTransparency = 0.4
     searchIconHint.ZIndex = 17
     searchIconHint.Parent = searchCard
-
     local newSearchTextBox = Instance.new("TextBox")
     newSearchTextBox.Font = Enum.Font.Gotham
     newSearchTextBox.PlaceholderText = "Search features..."
@@ -987,7 +982,6 @@ function Orvion:CreateWindow(config)
     newSearchTextBox.ClearTextOnFocus = false
     newSearchTextBox.ZIndex = 17
     newSearchTextBox.Parent = searchCard
-
     local searchCloseBtn = Instance.new("TextButton")
     searchCloseBtn.Text = ""
     searchCloseBtn.BackgroundTransparency = 0.999
@@ -1006,11 +1000,9 @@ function Orvion:CreateWindow(config)
     searchCloseIcon.ImageTransparency = 0.2
     searchCloseIcon.ZIndex = 19
     searchCloseIcon.Parent = searchCloseBtn
-
     local searchActive = false
     local currentSearchContent = nil
     local TI_SEARCH = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-
     local function applySearch(query)
         if not currentSearchContent then return end
         query = query:lower()
@@ -1024,45 +1016,25 @@ function Orvion:CreateWindow(config)
             end
         end
     end
-
     local function openSearch()
         searchActive = true
-        TweenService:Create(searchHolder, TI_SEARCH, {Size = UDim2.new(1, 0, 0, 44)}):Play()
-        if _TabFrame_ref then
-            TweenService:Create(_TabFrame_ref, TI_SEARCH, {Position = UDim2.new(0, 9, 0, 83)}):Play()
-        end
-        if _ContentFrame_ref then
-            TweenService:Create(_ContentFrame_ref, TI_SEARCH, {
-                Position = UDim2.new(0, 138, 0, 83),
-                Size     = UDim2.new(1, -147, 1, -83),
-            }):Play()
-        end
-        SearchBtnIcon.ImageColor3 = Color3.fromRGB(150, 150, 255)
+        TweenService:Create(searchHolder, TI_SEARCH, {Size=UDim2.new(1,0,0,44)}):Play()
+        if _TabFrame_ref then TweenService:Create(_TabFrame_ref,TI_SEARCH,{Position=UDim2.new(0,9,0,83)}):Play() end
+        if _ContentFrame_ref then TweenService:Create(_ContentFrame_ref,TI_SEARCH,{Position=UDim2.new(0,138,0,83),Size=UDim2.new(1,-147,1,-83)}):Play() end
+        if SearchBtnIcon then SearchBtnIcon.ImageColor3 = Color3.fromRGB(150,150,255) end
         task.delay(0.15, function() pcall(function() newSearchTextBox:CaptureFocus() end) end)
     end
-
     local function closeSearch()
         searchActive = false
-        TweenService:Create(searchHolder, TI_SEARCH, {Size = UDim2.new(1, 0, 0, 0)}):Play()
-        if _TabFrame_ref then
-            TweenService:Create(_TabFrame_ref, TI_SEARCH, {Position = UDim2.new(0, 9, 0, 39)}):Play()
-        end
-        if _ContentFrame_ref then
-            TweenService:Create(_ContentFrame_ref, TI_SEARCH, {
-                Position = UDim2.new(0, 138, 0, 39),
-                Size     = UDim2.new(1, -147, 1, -39),
-            }):Play()
-        end
+        TweenService:Create(searchHolder, TI_SEARCH, {Size=UDim2.new(1,0,0,0)}):Play()
+        if _TabFrame_ref then TweenService:Create(_TabFrame_ref,TI_SEARCH,{Position=UDim2.new(0,9,0,39)}):Play() end
+        if _ContentFrame_ref then TweenService:Create(_ContentFrame_ref,TI_SEARCH,{Position=UDim2.new(0,138,0,39),Size=UDim2.new(1,-147,1,-39)}):Play() end
         newSearchTextBox.Text = ""
-        SearchBtnIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+        if SearchBtnIcon then SearchBtnIcon.ImageColor3 = Color3.fromRGB(255,255,255) end
         pcall(function() newSearchTextBox:ReleaseFocus() end)
         applySearch("")
     end
-
-    Orvion._setSearchContent = function(cf)
-        currentSearchContent = cf
-        if searchActive then applySearch(newSearchTextBox.Text) end
-    end
+    Orvion._setSearchContent = function(cf) currentSearchContent=cf; if searchActive then applySearch(newSearchTextBox.Text) end end
 
 
     local UICorner = Instance.new("UICorner")
@@ -1304,7 +1276,6 @@ function Orvion:CreateWindow(config)
     MinIcon.Size = UDim2.new(1, -9, 1, -9)
     MinIcon.Parent = Min
 
-    -- Search icon button (logic wired below)
     local SearchBtn = Instance.new("TextButton")
     SearchBtn.Text = ""
     SearchBtn.AnchorPoint = Vector2.new(1, 0.5)
@@ -1314,7 +1285,6 @@ function Orvion:CreateWindow(config)
     SearchBtn.Size = UDim2.new(0, 25, 0, 25)
     SearchBtn.Name = "SearchBtn"
     SearchBtn.Parent = Top
-
     SearchBtnIcon = Instance.new("ImageLabel")
     SearchBtnIcon.Image = "rbxassetid://121018724060431"
     SearchBtnIcon.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1324,29 +1294,12 @@ function Orvion:CreateWindow(config)
     SearchBtnIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
     SearchBtnIcon.Size = UDim2.new(1, -8, 1, -8)
     SearchBtnIcon.Parent = SearchBtn
-
-    -- Wire search connections (all elements now exist)
-    SearchBtn.Activated:Connect(function()
-        if searchActive then closeSearch() else openSearch() end
-    end)
+    SearchBtn.Activated:Connect(function() if searchActive then closeSearch() else openSearch() end end)
     searchCloseBtn.Activated:Connect(closeSearch)
-    pcall(function()
-        newSearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-            applySearch(newSearchTextBox.Text)
-        end)
-    end)
-    -- Heartbeat polling backup (Delta compat)
-    local _lastSearchText = ""
-    local _searchPollConn
-    _searchPollConn = game:GetService("RunService").Heartbeat:Connect(function()
-        if not newSearchTextBox or not newSearchTextBox.Parent then
-            if _searchPollConn then _searchPollConn:Disconnect() end; return
-        end
-        local t = newSearchTextBox.Text
-        if t ~= _lastSearchText then
-            _lastSearchText = t
-            pcall(applySearch, t)
-        end
+    pcall(function() newSearchTextBox:GetPropertyChangedSignal("Text"):Connect(function() applySearch(newSearchTextBox.Text) end) end)
+    local _lstxt=""; local _spoll; _spoll=game:GetService("RunService").Heartbeat:Connect(function()
+        if not newSearchTextBox or not newSearchTextBox.Parent then if _spoll then _spoll:Disconnect() end; return end
+        local t=newSearchTextBox.Text; if t~=_lstxt then _lstxt=t; pcall(applySearch,t) end
     end)
 
     local ResizeHandle = nil
@@ -1424,6 +1377,349 @@ function Orvion:CreateWindow(config)
     TabTopPadding.PaddingTop = UDim.new(0, 4)
     TabTopPadding.Parent = TabScroll
 
+    -- Search bar
+    local SearchBar = Instance.new("Frame")
+    SearchBar.Name = "SearchBar"
+    SearchBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SearchBar.BackgroundTransparency = 0.93
+    SearchBar.BorderSizePixel = 0
+    SearchBar.Position = UDim2.new(0, 0, 0, 6)
+    SearchBar.Size = UDim2.new(1, 0, 0, 30)
+    SearchBar.ZIndex = 20
+    SearchBar.Parent = TabFrame
+
+    local SearchBarCorner = Instance.new("UICorner")
+    SearchBarCorner.CornerRadius = UDim.new(0, 4)
+    SearchBarCorner.Parent = SearchBar
+
+    local SearchIcon = Instance.new("ImageLabel")
+    SearchIcon.Image = "rbxassetid://109869955247116"
+    SearchIcon.BackgroundTransparency = 1
+    SearchIcon.Position = UDim2.new(0, 5, 0.5, 0)
+    SearchIcon.AnchorPoint = Vector2.new(0, 0.5)
+    SearchIcon.Size = UDim2.new(0, 14, 0, 14)
+    SearchIcon.ZIndex = 22
+    SearchIcon.Parent = SearchBar
+
+    local SearchTextBox = Instance.new("TextBox")
+    SearchTextBox.Font = Enum.Font.Gotham
+    SearchTextBox.PlaceholderText = "Search Features..."
+    SearchTextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 110)
+    SearchTextBox.Text = ""
+    SearchTextBox.TextColor3 = Color3.fromRGB(230, 230, 230)
+    SearchTextBox.TextSize = 11
+    SearchTextBox.TextXAlignment = Enum.TextXAlignment.Left
+    SearchTextBox.BackgroundTransparency = 1
+    SearchTextBox.BorderSizePixel = 0
+    SearchTextBox.Position = UDim2.new(0, 22, 0, 0)
+    SearchTextBox.Size = UDim2.new(1, -24, 1, 0)
+    SearchTextBox.ClearTextOnFocus = false
+    SearchTextBox.ZIndex = 21
+    SearchTextBox.Parent = SearchBar
+
+    local SearchResults = Instance.new("ScrollingFrame")
+    local SearchResultsLayout = nil  -- forward, assigned below
+    SearchResults.Name = "SearchResults"
+    SearchResults.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+    SearchResults.BorderSizePixel = 0
+    SearchResults.Position = UDim2.new(0, 9, 0, 75)
+    SearchResults.Size = UDim2.new(0, 120, 0, 0)
+    SearchResults.ScrollBarThickness = 2
+    SearchResults.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 170)
+    SearchResults.ClipsDescendants = true
+    SearchResults.ZIndex = 50
+    SearchResults.Visible = false
+    SearchResults.CanvasSize = UDim2.new(0, 0, 0, 0)
+    SearchResults.Parent = Main
+
+    local SearchResultsCorner = Instance.new("UICorner")
+    SearchResultsCorner.CornerRadius = UDim.new(0, 4)
+    SearchResultsCorner.Parent = SearchResults
+
+    SearchResultsLayout = Instance.new("UIListLayout")
+    SearchResultsLayout.Padding = UDim.new(0, 2)
+    SearchResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    SearchResultsLayout.Parent = SearchResults
+
+    SearchResultsLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        SearchResults.CanvasSize = UDim2.new(0, 0, 0, SearchResultsLayout.AbsoluteContentSize.Y + 4)
+    end)
+
+    local searchResultsOpen = false
+    local NoResultsLabel = nil
+    local SearchSections = {}
+    local TabContents = {}
+    local TabSwitchFns = {}
+    local TabCount = 0
+    local ContentScroll = nil
+    -- helper: sum Size.Y.Offset of children above stopAt (reliable, no render needed)
+    local function sumChildH(container, stopAt)
+        local y = 0
+        for _, ch in ipairs(container:GetChildren()) do
+            if ch == stopAt then break end
+            if ch:IsA("Frame") then y = y + ch.Size.Y.Offset + 8 end
+        end
+        return y
+    end
+
+    local function flashElem(elem)
+        task.spawn(function()
+            local s = Instance.new("UIStroke")
+            s.Color = Color3.fromRGB(180, 180, 210)
+            s.Thickness = 2.5
+            s.Transparency = 0
+            s.Parent = elem
+            task.wait(0.8)
+            if s and s.Parent then s:Destroy() end
+        end)
+    end
+
+    local function closeSearchResults()
+        searchResultsOpen = false
+        SearchResults.Visible = false
+        for _, child in ipairs(SearchResults:GetChildren()) do
+            if child:IsA("TextButton") then child:Destroy() end
+        end
+        if NoResultsLabel then NoResultsLabel.Visible = false end
+    end
+
+    local function buildSearchResults(query)
+        if not NoResultsLabel then return end
+        -- fresh destroy old buttons
+        for _, child in ipairs(SearchResults:GetChildren()) do
+            if child:IsA("TextButton") then child:Destroy() end
+        end
+        NoResultsLabel.Visible = false
+
+        if query == "" then
+            closeSearchResults()
+            return
+        end
+
+        local q = string.lower(query)
+        local found = 0
+
+        for _, sec in ipairs(SearchSections) do
+            pcall(function()
+                local inner = sec.secFrame and sec.secFrame:FindFirstChild("InnerContainer")
+                if not inner then return end
+                for _, elem in ipairs(inner:GetChildren()) do
+                    for _, lname in ipairs({"ToggleTitle","ButtonTitle","InputTitle","DropdownTitle","SliderTitle","ParagraphTitle"}) do
+                        local lbl = elem:FindFirstChild(lname)
+                        if lbl and lbl.Text and lbl.Text ~= "" then
+                            if string.find(string.lower(lbl.Text), q, 1, true) then
+                                found = found + 1
+                                local displayText = lbl.Text
+                                local subtitleText = (sec.tabName or "") .. " \xE2\x80\xA2 " .. (sec.title or "")
+                                local capSec = sec
+                                local capElem = elem
+
+                                local Item = Instance.new("TextButton", SearchResults)
+                                Item.Font = Enum.Font.GothamBold
+                                Item.Text = ""
+                                Item.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                                Item.BackgroundTransparency = 0.92
+                                Item.BorderSizePixel = 0
+                                Item.Size = UDim2.new(1, 0, 0, 40)
+                                Item.ZIndex = 51
+                                Item.AutoButtonColor = true
+                                Item.Visible = true
+                                Instance.new("UICorner", Item).CornerRadius = UDim.new(0, 3)
+
+                                -- pill indicator left
+                                local Pill = Instance.new("Frame", Item)
+                                Pill.BackgroundColor3 = Color3.fromRGB(150, 150, 170)
+                                Pill.BorderSizePixel = 0
+                                Pill.Position = UDim2.new(0, 0, 0.1, 0)
+                                Pill.Size = UDim2.new(0, 2, 0.8, 0)
+                                Pill.ZIndex = 52
+                                Instance.new("UICorner", Pill).CornerRadius = UDim.new(1, 0)
+
+                                -- main text
+                                local MainLabel = Instance.new("TextLabel", Item)
+                                MainLabel.Font = Enum.Font.GothamBold
+                                MainLabel.Text = displayText
+                                MainLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+                                MainLabel.TextSize = 13
+                                MainLabel.TextXAlignment = Enum.TextXAlignment.Left
+                                MainLabel.TextTruncate = Enum.TextTruncate.AtEnd
+                                MainLabel.BackgroundTransparency = 1
+                                MainLabel.BorderSizePixel = 0
+                                MainLabel.Position = UDim2.new(0, 8, 0, 4)
+                                MainLabel.Size = UDim2.new(1, -10, 0, 16)
+                                MainLabel.ZIndex = 52
+
+                                -- subtitle
+                                local SubLabel = Instance.new("TextLabel", Item)
+                                SubLabel.Font = Enum.Font.Gotham
+                                SubLabel.Text = subtitleText
+                                SubLabel.TextColor3 = Color3.fromRGB(120, 120, 140)
+                                SubLabel.TextSize = 9
+                                SubLabel.TextXAlignment = Enum.TextXAlignment.Left
+                                SubLabel.TextTruncate = Enum.TextTruncate.AtEnd
+                                SubLabel.BackgroundTransparency = 1
+                                SubLabel.BorderSizePixel = 0
+                                SubLabel.Position = UDim2.new(0, 8, 0, 22)
+                                SubLabel.Size = UDim2.new(1, -10, 0, 12)
+                                SubLabel.ZIndex = 52
+
+                                Item.MouseButton1Click:Connect(function()
+                                    task.spawn(function()
+                                        local sf = TabSwitchFns[capSec.tabName]
+                                        if sf then pcall(sf) end
+                                        pcall(capSec.openFn)
+                                        task.wait(0.2)
+                                        -- reliable scroll: sum child heights
+                                        local cont = TabContents[capSec.tabName]
+                                        local inner3 = capSec.secFrame and capSec.secFrame:FindFirstChild("InnerContainer")
+                                        local secOffset = cont and sumChildH(cont, capSec.secFrame) or 0
+                                        local elemOffset = inner3 and sumChildH(inner3, capElem) or 0
+                                        local scrollTo = secOffset + 34 + elemOffset
+                                        ContentScroll.CanvasPosition = Vector2.new(0, scrollTo)
+                                        flashElem(capElem)
+                                    end)
+                                    SearchTextBox.Text = ""
+                                    closeSearchResults()
+                                end)
+                            end
+                            break
+                        end
+                    end
+                end
+            end)
+        end
+
+        -- second pass: scan elements directly in tabs (outside collapsibles)
+        for tabName, container in pairs(TabContents or {}) do
+            for _, elem in ipairs(container:GetChildren()) do
+                if elem.Name ~= "Collapsible" then
+                    for _, lname in ipairs({"ToggleTitle","ButtonTitle","InputTitle","DropdownTitle","SliderTitle","ParagraphTitle"}) do
+                        local lbl = elem:FindFirstChild(lname)
+                        if lbl and lbl.Text and lbl.Text ~= "" then
+                            if string.find(string.lower(lbl.Text), q, 1, true) then
+                                found = found + 1
+                                local displayText = lbl.Text
+                                local subtitleText = tabName .. " \xE2\x80\xA2 " .. tabName
+                                local capTab = tabName
+                                local capElem = elem
+
+                                local Item = Instance.new("TextButton", SearchResults)
+                                Item.Font = Enum.Font.GothamBold
+                                Item.Text = ""
+                                Item.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                                Item.BackgroundTransparency = 0.92
+                                Item.BorderSizePixel = 0
+                                Item.Size = UDim2.new(1, 0, 0, 40)
+                                Item.ZIndex = 51
+                                Item.AutoButtonColor = true
+                                Item.Visible = true
+                                Instance.new("UICorner", Item).CornerRadius = UDim.new(0, 3)
+                                local Pill2 = Instance.new("Frame", Item)
+                                Pill2.BackgroundColor3 = Color3.fromRGB(150, 150, 170)
+                                Pill2.BorderSizePixel = 0
+                                Pill2.Position = UDim2.new(0, 0, 0.1, 0)
+                                Pill2.Size = UDim2.new(0, 2, 0.8, 0)
+                                Pill2.ZIndex = 52
+                                Instance.new("UICorner", Pill2).CornerRadius = UDim.new(1, 0)
+                                local ML2 = Instance.new("TextLabel", Item)
+                                ML2.Font = Enum.Font.GothamBold
+                                ML2.Text = displayText
+                                ML2.TextColor3 = Color3.fromRGB(220, 220, 220)
+                                ML2.TextSize = 13
+                                ML2.TextXAlignment = Enum.TextXAlignment.Left
+                                ML2.TextTruncate = Enum.TextTruncate.AtEnd
+                                ML2.BackgroundTransparency = 1
+                                ML2.BorderSizePixel = 0
+                                ML2.Position = UDim2.new(0, 8, 0, 4)
+                                ML2.Size = UDim2.new(1, -10, 0, 16)
+                                ML2.ZIndex = 52
+                                local SL2 = Instance.new("TextLabel", Item)
+                                SL2.Font = Enum.Font.Gotham
+                                SL2.Text = subtitleText
+                                SL2.TextColor3 = Color3.fromRGB(120, 120, 140)
+                                SL2.TextSize = 9
+                                SL2.TextXAlignment = Enum.TextXAlignment.Left
+                                SL2.TextTruncate = Enum.TextTruncate.AtEnd
+                                SL2.BackgroundTransparency = 1
+                                SL2.BorderSizePixel = 0
+                                SL2.Position = UDim2.new(0, 8, 0, 22)
+                                SL2.Size = UDim2.new(1, -10, 0, 12)
+                                SL2.ZIndex = 52
+                                Item.MouseButton1Click:Connect(function()
+                                    task.spawn(function()
+                                        local sf = TabSwitchFns[capTab]
+                                        if sf then pcall(sf) end
+                                        task.wait(0.2)
+                                        local cont = TabContents[capTab]
+                                        local scrollTo = cont and sumChildH(cont, capElem) or 0
+                                        ContentScroll.CanvasPosition = Vector2.new(0, scrollTo)
+                                        flashElem(capElem)
+                                    end)
+                                    SearchTextBox.Text = ""
+                                    closeSearchResults()
+                                end)
+                            end
+                            break
+                        end
+                    end
+                end
+            end
+        end
+
+        if found == 0 then
+            NoResultsLabel.Visible = true
+        end
+
+        -- defer so UIListLayout computes AbsoluteContentSize after items added
+        task.defer(function()
+            local contentH = SearchResultsLayout.AbsoluteContentSize.Y + 4
+            if found == 0 then contentH = 30 end
+            local targetH = math.max(30, math.min(contentH, 150))
+            SearchResults.CanvasSize = UDim2.new(0, 0, 0, contentH)
+            SearchResults.Size = UDim2.new(0, 120, 0, targetH)
+            SearchResults.Visible = true
+            searchResultsOpen = true
+        end)
+    end
+
+
+    -- NoResults label (hidden by default)
+    NoResultsLabel = Instance.new("TextLabel", SearchResults)
+    NoResultsLabel.Name = "NoResults"
+    NoResultsLabel.Text = "  No results"
+    NoResultsLabel.Font = Enum.Font.Gotham
+    NoResultsLabel.TextColor3 = Color3.fromRGB(120, 120, 130)
+    NoResultsLabel.TextSize = 11
+    NoResultsLabel.TextXAlignment = Enum.TextXAlignment.Left
+    NoResultsLabel.BackgroundTransparency = 1
+    NoResultsLabel.BorderSizePixel = 0
+    NoResultsLabel.Size = UDim2.new(1, 0, 0, 26)
+    NoResultsLabel.ZIndex = 51
+    NoResultsLabel.Visible = false
+
+    pcall(function()
+        SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+            buildSearchResults(SearchTextBox.Text)
+        end)
+    end)
+
+    -- polling backup (for executors where GetPropertyChangedSignal fails)
+    local _lastTxt = ""
+    task.spawn(function()
+        while true do
+            task.wait(0.1)
+            if not SearchTextBox or not SearchTextBox.Parent then break end
+            local t = SearchTextBox.Text
+            if t ~= _lastTxt then
+                _lastTxt = t
+                pcall(buildSearchResults, t)
+            end
+        end
+    end)
+
+    SearchTextBox.FocusLost:Connect(function()
+        if SearchTextBox.Text == "" then closeSearchResults() end
+    end)
 
     local ContentFrame = Instance.new("Frame")
     ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -4086,6 +4382,22 @@ function Orvion:CreateWindow(config)
 
 
 
+        -- register in SearchSections for live search
+        local rawName = (tabContainer and tabContainer.Name) or ""
+        local tabName = rawName ~= "" and rawName:gsub("Content$", "") or nil
+        if tabName and title and title ~= "" then
+            local secTitle = (title or ""):gsub("^%s+", "")
+            table.insert(SearchSections, {
+                title   = secTitle,
+                tabName = tabName,
+                secFrame = SectionFrame,
+                openFn  = function()
+                    if not isOpen then
+                        isOpen = true
+                        updateSize()
+                    end
+                end,
+            })
         end
 
         updateSize()
@@ -4613,59 +4925,40 @@ function Orvion:CreateWindow(config)
     function Window:AddWelcomeCard(tabContainer)
         if not tabContainer or not tabContainer:IsA("Frame") then return end
         local LP = game:GetService("Players").LocalPlayer
-        local WelcomeCard = Instance.new("Frame")
-        WelcomeCard.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        WelcomeCard.BackgroundTransparency = 0.935
-        WelcomeCard.BorderSizePixel = 0
-        WelcomeCard.Size = UDim2.new(1, 0, 0, 88)
-        WelcomeCard.LayoutOrder = 0
-        WelcomeCard.Name = "WelcomeCard"
-        WelcomeCard.Parent = tabContainer
-        local WelcomeCardCorner = Instance.new("UICorner")
-        WelcomeCardCorner.CornerRadius = UDim.new(0, 4)
-        WelcomeCardCorner.Parent = WelcomeCard
-        local AvatarFrame = Instance.new("Frame")
-        AvatarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 65)
-        AvatarFrame.BorderSizePixel = 0
-        AvatarFrame.Position = UDim2.new(0, 14, 0.5, -28)
-        AvatarFrame.Size = UDim2.new(0, 56, 0, 56)
-        AvatarFrame.Parent = WelcomeCard
-        Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1, 0)
-        local AvatarImg = Instance.new("ImageLabel")
-        AvatarImg.Size = UDim2.new(1, 0, 1, 0)
-        AvatarImg.BackgroundTransparency = 1
-        AvatarImg.BorderSizePixel = 0
-        AvatarImg.Parent = AvatarFrame
-        Instance.new("UICorner", AvatarImg).CornerRadius = UDim.new(1, 0)
+        local WC = Instance.new("Frame")
+        WC.BackgroundColor3 = Color3.fromRGB(255,255,255)
+        WC.BackgroundTransparency = 0.935
+        WC.BorderSizePixel = 0
+        WC.Size = UDim2.new(1,0,0,88)
+        WC.LayoutOrder = 0
+        WC.Name = "WelcomeCard"
+        WC.Parent = tabContainer
+        Instance.new("UICorner",WC).CornerRadius = UDim.new(0,4)
+        local AF = Instance.new("Frame")
+        AF.BackgroundColor3 = Color3.fromRGB(50,50,65)
+        AF.BorderSizePixel = 0
+        AF.Position = UDim2.new(0,14,0.5,-28)
+        AF.Size = UDim2.new(0,56,0,56)
+        AF.Parent = WC
+        Instance.new("UICorner",AF).CornerRadius = UDim.new(1,0)
+        local AI = Instance.new("ImageLabel")
+        AI.Size = UDim2.new(1,0,1,0)
+        AI.BackgroundTransparency = 1
+        AI.BorderSizePixel = 0
+        AI.Parent = AF
+        Instance.new("UICorner",AI).CornerRadius = UDim.new(1,0)
         task.spawn(function()
-            local ok, img = pcall(function()
-                return game:GetService("Players"):GetUserThumbnailAsync(
-                    LP.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
-            end)
-            if ok and img then AvatarImg.Image = img end
+            local ok,img=pcall(function() return game:GetService("Players"):GetUserThumbnailAsync(LP.UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size150x150) end)
+            if ok and img then AI.Image=img end
         end)
-        local NameLabel = Instance.new("TextLabel")
-        NameLabel.Font = Enum.Font.GothamBold
-        NameLabel.Text = "Hey, " .. LP.Name .. "!"
-        NameLabel.TextColor3 = Color3.fromRGB(240, 240, 255)
-        NameLabel.TextSize = 14
-        NameLabel.TextXAlignment = Enum.TextXAlignment.Left
-        NameLabel.BackgroundTransparency = 1
-        NameLabel.BorderSizePixel = 0
-        NameLabel.Size = UDim2.new(1, -96, 0, 20)
-        NameLabel.Position = UDim2.new(0, 82, 0, 24)
-        NameLabel.Parent = WelcomeCard
-        local SubLabel = Instance.new("TextLabel")
-        SubLabel.Font = Enum.Font.GothamBold
-        SubLabel.Text = "Welcome to Orvion Hub"
-        SubLabel.TextColor3 = Color3.fromRGB(130, 130, 155)
-        SubLabel.TextSize = 12
-        SubLabel.TextXAlignment = Enum.TextXAlignment.Left
-        SubLabel.BackgroundTransparency = 1
-        SubLabel.BorderSizePixel = 0
-        SubLabel.Size = UDim2.new(1, -96, 0, 16)
-        SubLabel.Position = UDim2.new(0, 82, 0, 50)
-        SubLabel.Parent = WelcomeCard
+        local NL = Instance.new("TextLabel")
+        NL.Font = Enum.Font.GothamBold; NL.Text = "Hey, "..LP.Name.."!"; NL.TextColor3 = Color3.fromRGB(240,240,255)
+        NL.TextSize = 14; NL.TextXAlignment = Enum.TextXAlignment.Left; NL.BackgroundTransparency = 1
+        NL.BorderSizePixel = 0; NL.Size = UDim2.new(1,-96,0,20); NL.Position = UDim2.new(0,82,0,24); NL.Parent = WC
+        local SL = Instance.new("TextLabel")
+        SL.Font = Enum.Font.GothamBold; SL.Text = "Welcome to Orvion Hub"; SL.TextColor3 = Color3.fromRGB(130,130,155)
+        SL.TextSize = 12; SL.TextXAlignment = Enum.TextXAlignment.Left; SL.BackgroundTransparency = 1
+        SL.BorderSizePixel = 0; SL.Size = UDim2.new(1,-96,0,16); SL.Position = UDim2.new(0,82,0,50); SL.Parent = WC
     end
 
     function Window:Show()
