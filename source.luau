@@ -948,8 +948,8 @@ function Orvion:CreateWindow(config)
     searchHolder.BackgroundTransparency=1; searchHolder.BorderSizePixel=0
     searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,39)
     searchHolder.ZIndex=15; searchHolder.ClipsDescendants=true; searchHolder.Parent=Main
-    local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(30,30,30)
-    sCard.BackgroundTransparency=0.5; sCard.BorderSizePixel=0
+    local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(255,255,255)
+    sCard.BackgroundTransparency=0.935; sCard.BorderSizePixel=0
     sCard.Size=UDim2.new(1,-16,0,36); sCard.Position=UDim2.new(0,8,0,4)
     sCard.ZIndex=16; sCard.Parent=searchHolder
     Instance.new("UICorner",sCard).CornerRadius=UDim.new(1,0)
@@ -4314,7 +4314,7 @@ function Orvion:CreateWindow(config)
     local function CreateTabButton(tabName, iconId, isConfigTab)
         TabCount = TabCount + 1
         local Tab = Instance.new("TextButton")
-        Tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         Tab.BackgroundTransparency = 0.5
         Tab.BorderSizePixel = 0
         -- Width = icon(16+6) + label text width + padding(14*2)
@@ -4413,8 +4413,8 @@ function Orvion:CreateWindow(config)
 
             for _, tabFrame in TabScroll:GetChildren() do
                 if tabFrame.Name == "Tab" then
-                    tabFrame.BackgroundTransparency = 0.5
-                    tabFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                    tabFrame.BackgroundTransparency = 0.935
+                    tabFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 end
             end
 
