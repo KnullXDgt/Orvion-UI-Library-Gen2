@@ -954,7 +954,7 @@ function Orvion:CreateWindow(config)
     ImageWrapper.Position = UDim2.new(0, 0, 0, 0)
     ImageWrapper.BackgroundTransparency = 1
     ImageWrapper.ClipsDescendants = true
-    ImageWrapper.ZIndex = 0
+    ImageWrapper.ZIndex = 1
     ImageWrapper.Parent = Main
 
     local ImageWrapperCorner = Instance.new("UICorner")
@@ -969,7 +969,7 @@ function Orvion:CreateWindow(config)
     ThemeImage.ImageTransparency = 0.75
     ThemeImage.ScaleType = Enum.ScaleType.Crop
     ThemeImage.Image = BgImageId
-    ThemeImage.ZIndex = 0
+    ThemeImage.ZIndex = 1
     ThemeImage.Visible = (ConfigSystem.CurrentTheme == BgImageTheme)
     ThemeImage.Parent = ImageWrapper
 
