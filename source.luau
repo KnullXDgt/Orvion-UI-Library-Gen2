@@ -1595,7 +1595,166 @@ function Orvion:CreateWindow(config)
         if SearchTextBox.Text == "" then closeSearchResults() end
     end)
 
-    
+    local ContentFrame = Instance.new("Frame")
+    ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ContentFrame.BackgroundTransparency = 0.999
+    ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ContentFrame.BorderSizePixel = 0
+    ContentFrame.Position = UDim2.new(0, 138, 0, 39)
+    ContentFrame.Size = UDim2.new(1, -147, 1, -39)
+    ContentFrame.Name = "ContentFrame"
+    ContentFrame.Parent = Main
+
+    local ContentCorner = Instance.new("UICorner")
+    ContentCorner.CornerRadius = UDim.new(0, 2)
+    ContentCorner.Parent = ContentFrame
+
+    ContentScroll = Instance.new("ScrollingFrame")
+    ContentScroll.ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80)
+    ContentScroll.ScrollBarThickness = 0
+    ContentScroll.Active = true
+    ContentScroll.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ContentScroll.BackgroundTransparency = 0.999
+    ContentScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ContentScroll.BorderSizePixel = 0
+    ContentScroll.ClipsDescendants = true
+    ContentScroll.Position = UDim2.new(0, 0, 0, 6)
+    ContentScroll.Size = UDim2.new(1, 0, 1, -6)
+    ContentScroll.Name = "ContentScroll"
+    ContentScroll.Parent = ContentFrame
+
+
+
+    local ContentLayout = Instance.new("UIListLayout")
+    ContentLayout.Padding = UDim.new(0, 8)
+    ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ContentLayout.Parent = ContentScroll
+
+    TabContents = {}
+    local CurrentTab = nil
+    local TabCount = 0
+    local AllElements = {}
+    TabSwitchFns = {}
+
+    local function UpdateTabSize()
+        local OffsetY = 0
+        for _, child in TabScroll:GetChildren() do
+            if child:IsA("Frame") then
+                OffsetY = OffsetY + 3 + child.Size.Y.Offset
+            end
+        end
+        TabScroll.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
+    end
+
+    local function UpdateContentSize()
+        if CurrentTab and TabContents[CurrentTab] then
+            local OffsetY = 0
+            for _, child in TabContents[CurrentTab]:GetChildren() do
+                if child:IsA("Frame") then
+                    OffsetY = OffsetY + 8 + child.Size.Y.Offset
+                end
+            end
+            ContentScroll.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
+        end
+    end
+
+    TabScroll.ChildAdded:Connect(UpdateTabSize)
+    TabScroll.ChildRemoved:Connect(UpdateTabSize)
+
+    setupCloseModal(Close, Main, ScreenGui)
+
+    Min.Activated:Connect(
+        function()
+            CircleClick(Min, Mouse.X, Mouse.Y)
+            DropShadowHolder.Visible = false
+        end
+    )
+
+    UserInputService.InputBegan:Connect(
+        function(input)
+            if input.KeyCode == MinimizeKey then
+                DropShadowHolder.Visible = not DropShadowHolder.Visible
+            end
+        end
+    )
+
+    if Draggable then
+        MakeDraggable(Top, DropShadowHolder)
+    end
+
+    local MobileMinimizeButton = nil
+    if MinimizeButton then
+        MobileMinimizeButton = Instance.new("Frame")
+        MobileMinimizeButton.Name = "MobileMinimizeButton"
+        MobileMinimizeButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        MobileMinimizeButton.BackgroundTransparency = 0.2
+        MobileMinimizeButton.BorderSizePixel = 0
+        MobileMinimizeButton.Size = UDim2.new(0, 50, 0, 50)
+        MobileMinimizeButton.Position = UDim2.new(0, 20, 0, 100)
+        MobileMinimizeButton.ZIndex = 100
+        MobileMinimizeButton.Parent = ScreenGui
+
+        local ButtonCorner = Instance.new("UICorner")
+        ButtonCorner.CornerRadius = UDim.new(1, 0)
+        ButtonCorner.Parent = MobileMinimizeButton
+
+        local ButtonStroke = Instance.new("UIStroke")
+        ButtonStroke.Color = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+        ButtonStroke.Thickness = 0
+        ButtonStroke.Parent = MobileMinimizeButton
+
+        local ButtonImage = Instance.new("ImageLabel")
+        ButtonImage.Name = "ButtonImage"
+        ButtonImage.Image = MinimizeButtonImage
+        ButtonImage.BackgroundTransparency = 1
+        ButtonImage.Size = UDim2.new(0.7, 0, 0.7, 0)
+        ButtonImage.Position = UDim2.new(0.15, 0, 0.15, 0)
+        ButtonImage.ZIndex = 101
+        ButtonImage.Parent = MobileMinimizeButton
+
+        local ClickDetector = Instance.new("TextButton")
+        ClickDetector.Name = "ClickDetector"
+        ClickDetector.Text = ""
+        ClickDetector.BackgroundTransparency = 1
+        ClickDetector.Size = UDim2.new(1, 0, 1, 0)
+        ClickDetector.ZIndex = 102
+        ClickDetector.Parent = MobileMinimizeButton
+
+        local isDragging = MakeDraggableMobileButton(ClickDetector, MobileMinimizeButton, ScreenGui)
+
+        local lastClick = 0
+        ClickDetector.Activated:Connect(
+            function()
+                local now = workspace.DistributedGameTime
+                if now - lastClick < 0.3 then
+                    return
+                end
+                lastClick = now
+
+                if not isDragging() then
+                    DropShadowHolder.Visible = not DropShadowHolder.Visible
+
+                    TweenService:Create(MobileMinimizeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, 45, 0, 45)}):Play(
+
+                    )
+                    task.wait(0.1)
+                    TweenService:Create(MobileMinimizeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, 50, 0, 50)}):Play(
+
+                    )
+                end
+            end
+        )
+
+        table.insert(
+            ConfigSystem.ThemeElements,
+            {
+                Update = function(color)
+                    ButtonStroke.Color = color
+                end
+            }
+        )
+    end
+
     -- Floating toggle button (open/close UI)
     local ToggleButtonEnabled = config.ToggleButton or false
     local ToggleButtonImage   = config.ToggleButton_Image or "rbxassetid://121365062523142"
