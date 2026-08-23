@@ -1324,7 +1324,6 @@ function Orvion:CreateWindow(config)
     local SearchSections = {}
     local TabContents = {}
     local TabSwitchFns = {}
-    local TabCount = 0
     local ContentScroll = nil
     -- helper: sum Size.Y.Offset of children above stopAt (reliable, no render needed)
     local function sumChildH(container, stopAt)
@@ -1629,6 +1628,7 @@ function Orvion:CreateWindow(config)
         TBSurface.BackgroundTransparency = 1
         TBSurface.Size = UDim2.new(1, 0, 1, 0)
         TBSurface.ZIndex = 102
+        TBSurface.Active = true
 
         -- Drag logic via UserInputService (bukan element.InputChanged)
         -- -> mouse capture tidak putus saat cursor keluar element
@@ -1755,26 +1755,6 @@ function Orvion:CreateWindow(config)
         ParagraphContent.AutomaticSize = Enum.AutomaticSize.Y
         Paragraph.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 50))
         Paragraph.AutomaticSize = Enum.AutomaticSize.Y
-
-    local function UpdateContentSize()
-        if CurrentTab and TabContents[CurrentTab] then
-            local OffsetY = 0
-            for _, child in TabContents[CurrentTab]:GetChildren() do
-                if child:IsA("Frame") then
-                    OffsetY = OffsetY + 8 + child.Size.Y.Offset
-                end
-            end
-            ContentScroll.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
-        end
-    end
-
-    local function UpdateContentSize()
-        if CurrentTab and TabContents[CurrentTab] then
-            local OffsetY = 0
-            for _, child in TabContents[CurrentTab]:GetChildren() do
-                if child:IsA("Frame") then
-                    OffsetY = OffsetY + 8 + child.Size.Y.Offset
-                end
 
         UpdateContentSize()
 
@@ -4657,8 +4637,6 @@ function Orvion:CreateWindow(config)
     function Window:AddWelcomeCard(tabContainer)
         if not tabContainer or not tabContainer:IsA("Frame") then return end
         local LP = game:GetService("Players").LocalPlayer
-
-        -- Container: no custom background, uses ContentFrame bawaan
         local WelcomeCard = Instance.new("Frame")
         WelcomeCard.BackgroundTransparency = 1
         WelcomeCard.BorderSizePixel = 0
@@ -4666,7 +4644,6 @@ function Orvion:CreateWindow(config)
         WelcomeCard.LayoutOrder = 0
         WelcomeCard.Name = "WelcomeCard"
         WelcomeCard.Parent = tabContainer
-
         local AvatarFrame = Instance.new("Frame")
         AvatarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 65)
         AvatarFrame.BorderSizePixel = 0
@@ -4674,23 +4651,19 @@ function Orvion:CreateWindow(config)
         AvatarFrame.Size = UDim2.new(0, 56, 0, 56)
         AvatarFrame.Parent = WelcomeCard
         Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1, 0)
-
         local AvatarImg = Instance.new("ImageLabel")
         AvatarImg.Size = UDim2.new(1, 0, 1, 0)
         AvatarImg.BackgroundTransparency = 1
         AvatarImg.BorderSizePixel = 0
         AvatarImg.Parent = AvatarFrame
         Instance.new("UICorner", AvatarImg).CornerRadius = UDim.new(1, 0)
-
         task.spawn(function()
             local ok, img = pcall(function()
                 return game:GetService("Players"):GetUserThumbnailAsync(
-                    LP.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150
-                )
+                    LP.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
             end)
             if ok and img then AvatarImg.Image = img end
         end)
-
         local NameLabel = Instance.new("TextLabel")
         NameLabel.Font = Enum.Font.GothamBold
         NameLabel.Text = "Hey, " .. LP.Name .. "!"
@@ -4702,7 +4675,6 @@ function Orvion:CreateWindow(config)
         NameLabel.Size = UDim2.new(1, -96, 0, 20)
         NameLabel.Position = UDim2.new(0, 82, 0, 24)
         NameLabel.Parent = WelcomeCard
-
         local SubLabel = Instance.new("TextLabel")
         SubLabel.Font = Enum.Font.GothamBold
         SubLabel.Text = "Welcome to Orvion Hub"
