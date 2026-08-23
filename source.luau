@@ -4426,7 +4426,7 @@ function Orvion:CreateWindow(config)
         end
 
         TabSwitchFns[tabName] = SwitchToTab
-        if TabCount == 1 then SwitchToTab() end
+        if TabCount == 1 then task.defer(SwitchToTab) end
 
         Tab.Activated:Connect(
             function()
