@@ -1338,9 +1338,9 @@ function Orvion:CreateWindow(config)
     SearchResults.ZIndex = 50
     SearchResults.Visible = false
     SearchResults.CanvasSize = UDim2.new(0, 0, 0, 0)
-    SearchResults.Parent=searchHolder
-    SearchResults.Position=UDim2.new(0,0,0,44)
-    SearchResults.Size=UDim2.new(1,0,0,0)
+    SearchResults.Parent=Main
+    SearchResults.Position=UDim2.new(0,8,0,83)
+    SearchResults.Size=UDim2.new(1,-16,0,0)
     SearchResults.ZIndex=20
 
     local SearchResultsCorner = Instance.new("UICorner")
