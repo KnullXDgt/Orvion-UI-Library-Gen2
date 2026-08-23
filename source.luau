@@ -935,6 +935,108 @@ function Orvion:CreateWindow(config)
     Main.Size = UDim2.new(1, -47, 1, -47)
     Main.Name = "Main"
     Main.Parent = DropShadow
+    -- ====== SEARCH OVERLAY ======
+    local SearchOverlay = Instance.new("Frame")
+    SearchOverlay.Name = "SearchOverlay"
+    SearchOverlay.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
+    SearchOverlay.BackgroundTransparency = 0.05
+    SearchOverlay.BorderSizePixel = 0
+    SearchOverlay.Size = UDim2.new(1, 0, 1, -39)
+    SearchOverlay.Position = UDim2.new(0, 0, 0, 39)
+    SearchOverlay.ZIndex = 20
+    SearchOverlay.Visible = false
+    SearchOverlay.Parent = Main
+
+    local SearchInputFrame = Instance.new("Frame")
+    SearchInputFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
+    SearchInputFrame.BackgroundTransparency = 0.1
+    SearchInputFrame.BorderSizePixel = 0
+    SearchInputFrame.Size = UDim2.new(1, -48, 0, 40)
+    SearchInputFrame.Position = UDim2.new(0, 12, 0, 12)
+    SearchInputFrame.ZIndex = 21
+    SearchInputFrame.Parent = SearchOverlay
+    Instance.new("UICorner", SearchInputFrame).CornerRadius = UDim.new(0, 8)
+
+    local SearchTextBox = Instance.new("TextBox")
+    SearchTextBox.Font = Enum.Font.GothamBold
+    SearchTextBox.PlaceholderText = "Search features..."
+    SearchTextBox.Text = ""
+    SearchTextBox.TextSize = 13
+    SearchTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SearchTextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 120)
+    SearchTextBox.BackgroundTransparency = 1
+    SearchTextBox.BorderSizePixel = 0
+    SearchTextBox.Size = UDim2.new(1, -12, 1, 0)
+    SearchTextBox.Position = UDim2.new(0, 12, 0, 0)
+    SearchTextBox.ZIndex = 22
+    SearchTextBox.ClearTextOnFocus = false
+    SearchTextBox.Parent = SearchInputFrame
+
+    local SearchCloseBtn = Instance.new("TextButton")
+    SearchCloseBtn.Text = ""
+    SearchCloseBtn.BackgroundTransparency = 0.999
+    SearchCloseBtn.BorderSizePixel = 0
+    SearchCloseBtn.Size = UDim2.new(0, 30, 0, 40)
+    SearchCloseBtn.Position = UDim2.new(1, -36, 0, 12)
+    SearchCloseBtn.ZIndex = 22
+    SearchCloseBtn.Parent = SearchOverlay
+    local SearchCloseIcon = Instance.new("ImageLabel")
+    SearchCloseIcon.Image = "rbxassetid://9886659671"
+    SearchCloseIcon.BackgroundTransparency = 1
+    SearchCloseIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    SearchCloseIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+    SearchCloseIcon.Size = UDim2.new(0, 16, 0, 16)
+    SearchCloseIcon.ImageTransparency = 0.2
+    SearchCloseIcon.Parent = SearchCloseBtn
+
+    local searchActive = false
+    local currentSearchContent = nil
+
+    local function applySearch(query)
+        if not currentSearchContent then return end
+        query = query:lower()
+        for _, child in ipairs(currentSearchContent:GetChildren()) do
+            if child:IsA("Frame") and child.Name == "Collapsible" then
+                local hdr = child:FindFirstChildWhichIsA("TextButton")
+                if hdr then
+                    local title = hdr.Text:lower():gsub("^%s+","")
+                    child.Visible = query == "" or title:find(query,1,true) ~= nil
+                end
+            end
+        end
+    end
+
+    local function openSearch()
+        searchActive = true
+        SearchOverlay.Visible = true
+        SearchBtnIcon.ImageColor3 = Color3.fromRGB(150,150,255)
+        task.delay(0.05, function() SearchTextBox:CaptureFocus() end)
+    end
+
+    local function closeSearch()
+        searchActive = false
+        SearchOverlay.Visible = false
+        SearchTextBox.Text = ""
+        SearchBtnIcon.ImageColor3 = Color3.fromRGB(255,255,255)
+        SearchTextBox:ReleaseFocus()
+        applySearch("")
+    end
+
+    SearchBtn.Activated:Connect(function()
+        if searchActive then closeSearch() else openSearch() end
+    end)
+    SearchCloseBtn.Activated:Connect(closeSearch)
+    pcall(function()
+        SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+            applySearch(SearchTextBox.Text)
+        end)
+    end)
+
+    Orvion._setSearchContent = function(cf)
+        currentSearchContent = cf
+        if searchActive then applySearch(SearchTextBox.Text) end
+    end
+
 
     local UICorner = Instance.new("UICorner")
     UICorner.Parent = Main
@@ -1078,7 +1180,7 @@ function Orvion:CreateWindow(config)
     BadgeContainer.AnchorPoint = Vector2.new(1, 0.5)
     BadgeContainer.BackgroundTransparency = 1
     BadgeContainer.Size = UDim2.new(0, 160, 1, 0)
-    BadgeContainer.Position = UDim2.new(1, -77, 0.5, 0)
+    BadgeContainer.Position = UDim2.new(1, -114, 0.5, 0)
     BadgeContainer.Parent = Top
 
     local BadgeLayout = Instance.new("UIListLayout")
@@ -1174,8 +1276,26 @@ function Orvion:CreateWindow(config)
     MinIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
     MinIcon.Size = UDim2.new(1, -9, 1, -9)
     MinIcon.Parent = Min
+    -- ====== SEARCH BUTTON ======
+    local SearchBtn = Instance.new("TextButton")
+    SearchBtn.Text = ""
+    SearchBtn.AnchorPoint = Vector2.new(1, 0.5)
+    SearchBtn.BackgroundTransparency = 0.999
+    SearchBtn.BorderSizePixel = 0
+    SearchBtn.Position = UDim2.new(1, -76, 0.5, 0)
+    SearchBtn.Size = UDim2.new(0, 25, 0, 25)
+    SearchBtn.Name = "SearchBtn"
+    SearchBtn.Parent = Top
 
-
+    local SearchBtnIcon = Instance.new("ImageLabel")
+    SearchBtnIcon.Image = "rbxassetid://121018724060431"
+    SearchBtnIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    SearchBtnIcon.BackgroundTransparency = 0.999
+    SearchBtnIcon.BorderSizePixel = 0
+    SearchBtnIcon.ImageTransparency = 0.2
+    SearchBtnIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+    SearchBtnIcon.Size = UDim2.new(1, -8, 1, -8)
+    SearchBtnIcon.Parent = SearchBtn
 
     local ResizeHandle = nil
     if Resizable then
