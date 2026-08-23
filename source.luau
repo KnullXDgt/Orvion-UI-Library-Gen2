@@ -1763,6 +1763,18 @@ function Orvion:CreateWindow(config)
                 if child:IsA("Frame") then
                     OffsetY = OffsetY + 8 + child.Size.Y.Offset
                 end
+            end
+            ContentScroll.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
+        end
+    end
+
+    local function UpdateContentSize()
+        if CurrentTab and TabContents[CurrentTab] then
+            local OffsetY = 0
+            for _, child in TabContents[CurrentTab]:GetChildren() do
+                if child:IsA("Frame") then
+                    OffsetY = OffsetY + 8 + child.Size.Y.Offset
+                end
 
         UpdateContentSize()
 
