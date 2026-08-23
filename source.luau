@@ -970,10 +970,6 @@ function Orvion:CreateWindow(config)
     sCI.BackgroundTransparency=1; sCI.AnchorPoint=Vector2.new(0.5,0.5)
     sCI.Position=UDim2.new(0.5,0,0.5,0); sCI.Size=UDim2.new(0,14,0,14)
     sCI.ImageTransparency=0.2; sCI.ZIndex=19; sCI.Parent=sCBtn
-    -- Reparent SearchResults into searchHolder
-    SearchResults.Parent=searchHolder
-    SearchResults.Position=UDim2.new(0,0,0,44); SearchResults.Size=UDim2.new(1,0,0,0)
-    SearchResults.ZIndex=20
     local TIS=TweenInfo.new(0.22,Enum.EasingStyle.Quint,Enum.EasingDirection.Out)
     local function openSearch()
         searchActive=true
@@ -1340,7 +1336,10 @@ function Orvion:CreateWindow(config)
     SearchResults.ZIndex = 50
     SearchResults.Visible = false
     SearchResults.CanvasSize = UDim2.new(0, 0, 0, 0)
-    -- SearchResults.Parent set below
+    SearchResults.Parent=searchHolder
+    SearchResults.Position=UDim2.new(0,0,0,44)
+    SearchResults.Size=UDim2.new(1,0,0,0)
+    SearchResults.ZIndex=20
 
     local SearchResultsCorner = Instance.new("UICorner")
     SearchResultsCorner.CornerRadius = UDim.new(0, 4)
