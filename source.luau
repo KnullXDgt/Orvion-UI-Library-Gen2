@@ -4086,12 +4086,6 @@ function Orvion:CreateWindow(config)
 
 
 
--- SearchSections ref removed
-        local rawName = (tabContainer and tabContainer.Name) or ""
-        local tabName = rawName ~= "" and rawName:gsub("Content$", "") or nil
-        if tabName and title and title ~= "" then
-            local secTitle = (title or ""):gsub("^%s+", "")
--- SearchSections removed
         end
 
         updateSize()
