@@ -941,6 +941,8 @@ function Orvion:CreateWindow(config)
     local newSTB = nil
     local sCBtn = nil
     local searchActive = false
+    local closeSearchResults = nil
+    local buildSearchResults = nil
     Main.Parent = DropShadow
     searchHolder=Instance.new("Frame"); searchHolder.Name="SearchHolder"
     searchHolder.BackgroundTransparency=1; searchHolder.BorderSizePixel=0
@@ -1383,7 +1385,7 @@ function Orvion:CreateWindow(config)
         end)
     end
 
-    local function closeSearchResults()
+    closeSearchResults = function()
         searchResultsOpen = false
         SearchResults.Visible = false
         for _, child in ipairs(SearchResults:GetChildren()) do
@@ -1392,7 +1394,7 @@ function Orvion:CreateWindow(config)
         if NoResultsLabel then NoResultsLabel.Visible = false end
     end
 
-    local function buildSearchResults(query)
+    buildSearchResults = function(query)
         if not NoResultsLabel then return end
         -- fresh destroy old buttons
         for _, child in ipairs(SearchResults:GetChildren()) do
