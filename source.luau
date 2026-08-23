@@ -4891,6 +4891,70 @@ function Orvion:CreateWindow(config)
         end
     end
 
+
+    function Window:AddWelcomeCard(tabContainer)
+        if not tabContainer or not tabContainer:IsA("Frame") then return end
+        local LP = game:GetService("Players").LocalPlayer
+
+        local Card = Instance.new("Frame")
+        Card.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
+        Card.BackgroundTransparency = 0.3
+        Card.BorderSizePixel = 0
+        Card.Size = UDim2.new(1, 0, 0, 88)
+        Card.LayoutOrder = 0
+        Card.Name = "WelcomeCard"
+        Card.Parent = tabContainer
+        Instance.new("UICorner", Card).CornerRadius = UDim.new(0, 12)
+
+        local AvatarFrame = Instance.new("Frame")
+        AvatarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 65)
+        AvatarFrame.BorderSizePixel = 0
+        AvatarFrame.Position = UDim2.new(0, 14, 0.5, -28)
+        AvatarFrame.Size = UDim2.new(0, 56, 0, 56)
+        AvatarFrame.Parent = Card
+        Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1, 0)
+
+        local AvatarImg = Instance.new("ImageLabel")
+        AvatarImg.Size = UDim2.new(1, 0, 1, 0)
+        AvatarImg.BackgroundTransparency = 1
+        AvatarImg.BorderSizePixel = 0
+        AvatarImg.Parent = AvatarFrame
+        Instance.new("UICorner", AvatarImg).CornerRadius = UDim.new(1, 0)
+
+        task.spawn(function()
+            local ok, img = pcall(function()
+                return game:GetService("Players"):GetUserThumbnailAsync(
+                    LP.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150
+                )
+            end)
+            if ok and img then AvatarImg.Image = img end
+        end)
+
+        local NameLabel = Instance.new("TextLabel")
+        NameLabel.Font = Enum.Font.GothamBold
+        NameLabel.Text = "Hey, " .. LP.Name .. "!"
+        NameLabel.TextColor3 = Color3.fromRGB(240, 240, 255)
+        NameLabel.TextSize = 14
+        NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+        NameLabel.BackgroundTransparency = 1
+        NameLabel.BorderSizePixel = 0
+        NameLabel.Size = UDim2.new(1, -96, 0, 20)
+        NameLabel.Position = UDim2.new(0, 82, 0, 24)
+        NameLabel.Parent = Card
+
+        local SubLabel = Instance.new("TextLabel")
+        SubLabel.Font = Enum.Font.Gotham
+        SubLabel.Text = "Welcome to Orvion Hub"
+        SubLabel.TextColor3 = Color3.fromRGB(130, 130, 155)
+        SubLabel.TextSize = 12
+        SubLabel.TextXAlignment = Enum.TextXAlignment.Left
+        SubLabel.BackgroundTransparency = 1
+        SubLabel.BorderSizePixel = 0
+        SubLabel.Size = UDim2.new(1, -96, 0, 16)
+        SubLabel.Position = UDim2.new(0, 82, 0, 50)
+        SubLabel.Parent = Card
+    end
+
     function Window:Show()
         DropShadowHolder.Visible = true
         task.spawn(function()
