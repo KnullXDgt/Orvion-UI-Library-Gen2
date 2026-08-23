@@ -4847,6 +4847,9 @@ function Orvion:CreateWindow(config)
 
     function Window:Show()
         DropShadowHolder.Visible = true
+        if CurrentTab and TabSwitchFns[CurrentTab] then
+            task.delay(0.05, TabSwitchFns[CurrentTab])
+        end
         task.spawn(function()
             pcall(function()
                 if isfile(AutoloadFile) then
