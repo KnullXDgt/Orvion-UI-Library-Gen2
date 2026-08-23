@@ -1596,263 +1596,7 @@ function Orvion:CreateWindow(config)
         if SearchTextBox.Text == "" then closeSearchResults() end
     end)
 
-    -- Player footer
-    local PlayerFooter = Instance.new("Frame")
-    PlayerFooter.Name = "PlayerFooter"
-    PlayerFooter.BackgroundTransparency = 1
-    PlayerFooter.Position = UDim2.new(0, 0, 1, -46)
-    PlayerFooter.Size = UDim2.new(1, 0, 0, 42)
-    PlayerFooter.BorderSizePixel = 0
-    PlayerFooter.Parent = TabFrame
-
-    local AvatarContainer = Instance.new("Frame")
-    AvatarContainer.BackgroundTransparency = 1
-    AvatarContainer.Position = UDim2.new(0, 5, 0.5, 0)
-    AvatarContainer.AnchorPoint = Vector2.new(0, 0.5)
-    AvatarContainer.Size = UDim2.new(0, 32, 0, 32)
-    AvatarContainer.BorderSizePixel = 0
-    AvatarContainer.Parent = PlayerFooter
-
-    local AvatarImg = Instance.new("ImageLabel")
-    AvatarImg.BackgroundTransparency = 1
-    AvatarImg.Size = UDim2.new(1, 0, 1, 0)
-    AvatarImg.Image = "rbxassetid://0"
-    AvatarImg.Parent = AvatarContainer
-
-    local AvatarCorner = Instance.new("UICorner")
-    AvatarCorner.CornerRadius = UDim.new(1, 0)
-    AvatarCorner.Parent = AvatarImg
-
-    local AvatarStroke = Instance.new("UIStroke")
-    AvatarStroke.Color = Color3.fromRGB(120, 120, 135)
-    AvatarStroke.Thickness = 1.5
-    AvatarStroke.Transparency = 0.2
-    AvatarStroke.Parent = AvatarImg
-
-    pcall(function()
-        local lp = Players.LocalPlayer
-        local content, isReady = Players:GetUserThumbnailAsync(lp.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size48x48)
-        if isReady then AvatarImg.Image = content end
-    end)
-
-    local WelcomeLabel = Instance.new("TextLabel")
-    WelcomeLabel.Name = "WelcomeLabel"
-    WelcomeLabel.BackgroundTransparency = 1
-    WelcomeLabel.Position = UDim2.new(0, 43, 0.5, -8)
-    WelcomeLabel.AnchorPoint = Vector2.new(0, 0)
-    WelcomeLabel.Size = UDim2.new(1, -47, 0, 13)
-    WelcomeLabel.Font = Enum.Font.GothamBold
-    WelcomeLabel.TextColor3 = Color3.fromRGB(200, 200, 215)
-    WelcomeLabel.TextSize = 11
-    WelcomeLabel.TextXAlignment = Enum.TextXAlignment.Left
-    WelcomeLabel.TextWrapped = false
-    WelcomeLabel.Text = "Welcome,"
-    WelcomeLabel.Visible = false
-    WelcomeLabel.Parent = PlayerFooter
-
-    local UsernameLabel = Instance.new("TextLabel")
-    UsernameLabel.Name = "UsernameLabel"
-    UsernameLabel.BackgroundTransparency = 1
-    UsernameLabel.Position = UDim2.new(0, 43, 0.5, 0)
-    UsernameLabel.AnchorPoint = Vector2.new(0, 0.5)
-    UsernameLabel.Size = UDim2.new(1, -47, 0, 13)
-    UsernameLabel.Font = Enum.Font.GothamBold
-    UsernameLabel.TextColor3 = Color3.fromRGB(200, 200, 215)
-    UsernameLabel.TextSize = 11
-    UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
-    UsernameLabel.TextWrapped = false
-    UsernameLabel.Text = "usr***"
-    UsernameLabel.Parent = PlayerFooter
-
-    local maskedName = "usr***"
-    pcall(function()
-        local rawName = tostring(Players.LocalPlayer.Name)
-        maskedName = string.sub(rawName, 1, 3) .. "***"
-        UsernameLabel.Text = maskedName
-    end)
-
-    -- Dynamic footer: 1 line when small, 2 lines when large
-    local function UpdateFooterLayout()
-        local h = Main.AbsoluteSize.Y
-        if h > 300 then
-            -- 2 labels
-            WelcomeLabel.Visible = true
-            WelcomeLabel.Position = UDim2.new(0, 43, 0.5, -8)
-            UsernameLabel.Position = UDim2.new(0, 43, 0.5, 3)
-            UsernameLabel.AnchorPoint = Vector2.new(0, 0)
-            UsernameLabel.Text = maskedName
-        else
-            -- 1 label: "Welcome, usr***"
-            WelcomeLabel.Visible = false
-            UsernameLabel.Position = UDim2.new(0, 43, 0.5, 0)
-            UsernameLabel.AnchorPoint = Vector2.new(0, 0.5)
-            UsernameLabel.Text = "Welcome, " .. maskedName
-        end
-    end
-
-    Main:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateFooterLayout)
-    task.defer(UpdateFooterLayout)
-
-    local ContentFrame = Instance.new("Frame")
-    ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ContentFrame.BackgroundTransparency = 0.999
-    ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ContentFrame.BorderSizePixel = 0
-    ContentFrame.Position = UDim2.new(0, 138, 0, 39)
-    ContentFrame.Size = UDim2.new(1, -147, 1, -39)
-    ContentFrame.Name = "ContentFrame"
-    ContentFrame.Parent = Main
-
-    local ContentCorner = Instance.new("UICorner")
-    ContentCorner.CornerRadius = UDim.new(0, 2)
-    ContentCorner.Parent = ContentFrame
-
-    ContentScroll = Instance.new("ScrollingFrame")
-    ContentScroll.ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80)
-    ContentScroll.ScrollBarThickness = 0
-    ContentScroll.Active = true
-    ContentScroll.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ContentScroll.BackgroundTransparency = 0.999
-    ContentScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ContentScroll.BorderSizePixel = 0
-    ContentScroll.ClipsDescendants = true
-    ContentScroll.Position = UDim2.new(0, 0, 0, 6)
-    ContentScroll.Size = UDim2.new(1, 0, 1, -6)
-    ContentScroll.Name = "ContentScroll"
-    ContentScroll.Parent = ContentFrame
-
-
-
-    local ContentLayout = Instance.new("UIListLayout")
-    ContentLayout.Padding = UDim.new(0, 8)
-    ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    ContentLayout.Parent = ContentScroll
-
-    TabContents = {}
-    local CurrentTab = nil
-    local TabCount = 0
-    local AllElements = {}
-    TabSwitchFns = {}
-
-    local function UpdateTabSize()
-        local OffsetY = 0
-        for _, child in TabScroll:GetChildren() do
-            if child:IsA("Frame") then
-                OffsetY = OffsetY + 3 + child.Size.Y.Offset
-            end
-        end
-        TabScroll.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
-    end
-
-    local function UpdateContentSize()
-        if CurrentTab and TabContents[CurrentTab] then
-            local OffsetY = 0
-            for _, child in TabContents[CurrentTab]:GetChildren() do
-                if child:IsA("Frame") then
-                    OffsetY = OffsetY + 8 + child.Size.Y.Offset
-                end
-            end
-            ContentScroll.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
-        end
-    end
-
-    TabScroll.ChildAdded:Connect(UpdateTabSize)
-    TabScroll.ChildRemoved:Connect(UpdateTabSize)
-
-    setupCloseModal(Close, Main, ScreenGui)
-
-    Min.Activated:Connect(
-        function()
-            CircleClick(Min, Mouse.X, Mouse.Y)
-            DropShadowHolder.Visible = false
-        end
-    )
-
-    UserInputService.InputBegan:Connect(
-        function(input)
-            if input.KeyCode == MinimizeKey then
-                DropShadowHolder.Visible = not DropShadowHolder.Visible
-            end
-        end
-    )
-
-    if Draggable then
-        MakeDraggable(Top, DropShadowHolder)
-    end
-
-    local MobileMinimizeButton = nil
-    if MinimizeButton then
-        MobileMinimizeButton = Instance.new("Frame")
-        MobileMinimizeButton.Name = "MobileMinimizeButton"
-        MobileMinimizeButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        MobileMinimizeButton.BackgroundTransparency = 0.2
-        MobileMinimizeButton.BorderSizePixel = 0
-        MobileMinimizeButton.Size = UDim2.new(0, 50, 0, 50)
-        MobileMinimizeButton.Position = UDim2.new(0, 20, 0, 100)
-        MobileMinimizeButton.ZIndex = 100
-        MobileMinimizeButton.Parent = ScreenGui
-
-        local ButtonCorner = Instance.new("UICorner")
-        ButtonCorner.CornerRadius = UDim.new(1, 0)
-        ButtonCorner.Parent = MobileMinimizeButton
-
-        local ButtonStroke = Instance.new("UIStroke")
-        ButtonStroke.Color = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
-        ButtonStroke.Thickness = 0
-        ButtonStroke.Parent = MobileMinimizeButton
-
-        local ButtonImage = Instance.new("ImageLabel")
-        ButtonImage.Name = "ButtonImage"
-        ButtonImage.Image = MinimizeButtonImage
-        ButtonImage.BackgroundTransparency = 1
-        ButtonImage.Size = UDim2.new(0.7, 0, 0.7, 0)
-        ButtonImage.Position = UDim2.new(0.15, 0, 0.15, 0)
-        ButtonImage.ZIndex = 101
-        ButtonImage.Parent = MobileMinimizeButton
-
-        local ClickDetector = Instance.new("TextButton")
-        ClickDetector.Name = "ClickDetector"
-        ClickDetector.Text = ""
-        ClickDetector.BackgroundTransparency = 1
-        ClickDetector.Size = UDim2.new(1, 0, 1, 0)
-        ClickDetector.ZIndex = 102
-        ClickDetector.Parent = MobileMinimizeButton
-
-        local isDragging = MakeDraggableMobileButton(ClickDetector, MobileMinimizeButton, ScreenGui)
-
-        local lastClick = 0
-        ClickDetector.Activated:Connect(
-            function()
-                local now = workspace.DistributedGameTime
-                if now - lastClick < 0.3 then
-                    return
-                end
-                lastClick = now
-
-                if not isDragging() then
-                    DropShadowHolder.Visible = not DropShadowHolder.Visible
-
-                    TweenService:Create(MobileMinimizeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, 45, 0, 45)}):Play(
-
-                    )
-                    task.wait(0.1)
-                    TweenService:Create(MobileMinimizeButton, TweenInfo.new(0.1), {Size = UDim2.new(0, 50, 0, 50)}):Play(
-
-                    )
-                end
-            end
-        )
-
-        table.insert(
-            ConfigSystem.ThemeElements,
-            {
-                Update = function(color)
-                    ButtonStroke.Color = color
-                end
-            }
-        )
-    end
-
+    
     -- Floating toggle button (open/close UI)
     local ToggleButtonEnabled = config.ToggleButton or false
     local ToggleButtonImage   = config.ToggleButton_Image or "rbxassetid://121365062523142"
@@ -4896,22 +4640,21 @@ function Orvion:CreateWindow(config)
         if not tabContainer or not tabContainer:IsA("Frame") then return end
         local LP = game:GetService("Players").LocalPlayer
 
-        local Card = Instance.new("Frame")
-        Card.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
-        Card.BackgroundTransparency = 0.3
-        Card.BorderSizePixel = 0
-        Card.Size = UDim2.new(1, 0, 0, 88)
-        Card.LayoutOrder = 0
-        Card.Name = "WelcomeCard"
-        Card.Parent = tabContainer
-        Instance.new("UICorner", Card).CornerRadius = UDim.new(0, 12)
+        -- Container: no custom background, uses ContentFrame bawaan
+        local WelcomeCard = Instance.new("Frame")
+        WelcomeCard.BackgroundTransparency = 1
+        WelcomeCard.BorderSizePixel = 0
+        WelcomeCard.Size = UDim2.new(1, 0, 0, 88)
+        WelcomeCard.LayoutOrder = 0
+        WelcomeCard.Name = "WelcomeCard"
+        WelcomeCard.Parent = tabContainer
 
         local AvatarFrame = Instance.new("Frame")
         AvatarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 65)
         AvatarFrame.BorderSizePixel = 0
         AvatarFrame.Position = UDim2.new(0, 14, 0.5, -28)
         AvatarFrame.Size = UDim2.new(0, 56, 0, 56)
-        AvatarFrame.Parent = Card
+        AvatarFrame.Parent = WelcomeCard
         Instance.new("UICorner", AvatarFrame).CornerRadius = UDim.new(1, 0)
 
         local AvatarImg = Instance.new("ImageLabel")
@@ -4940,10 +4683,10 @@ function Orvion:CreateWindow(config)
         NameLabel.BorderSizePixel = 0
         NameLabel.Size = UDim2.new(1, -96, 0, 20)
         NameLabel.Position = UDim2.new(0, 82, 0, 24)
-        NameLabel.Parent = Card
+        NameLabel.Parent = WelcomeCard
 
         local SubLabel = Instance.new("TextLabel")
-        SubLabel.Font = Enum.Font.Gotham
+        SubLabel.Font = Enum.Font.GothamBold
         SubLabel.Text = "Welcome to Orvion Hub"
         SubLabel.TextColor3 = Color3.fromRGB(130, 130, 155)
         SubLabel.TextSize = 12
@@ -4952,7 +4695,7 @@ function Orvion:CreateWindow(config)
         SubLabel.BorderSizePixel = 0
         SubLabel.Size = UDim2.new(1, -96, 0, 16)
         SubLabel.Position = UDim2.new(0, 82, 0, 50)
-        SubLabel.Parent = Card
+        SubLabel.Parent = WelcomeCard
     end
 
     function Window:Show()
