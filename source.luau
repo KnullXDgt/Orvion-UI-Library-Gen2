@@ -966,7 +966,7 @@ function Orvion:CreateWindow(config)
     ThemeImage.Size = UDim2.new(1, 0, 1, 0)
     ThemeImage.Position = UDim2.new(0, 0, 0, 0)
     ThemeImage.BackgroundTransparency = 1
-    ThemeImage.ImageTransparency = 0.7
+    ThemeImage.ImageTransparency = 0.75
     ThemeImage.ScaleType = Enum.ScaleType.Crop
     ThemeImage.Image = BgImageId
     ThemeImage.ZIndex = 1
