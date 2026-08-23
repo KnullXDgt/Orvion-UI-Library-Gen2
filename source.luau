@@ -4301,8 +4301,11 @@ function Orvion:CreateWindow(config)
         Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         Tab.BackgroundTransparency = 0.999
         Tab.BorderSizePixel = 0
-        Tab.AutomaticSize = Enum.AutomaticSize.X
-        Tab.Size = UDim2.new(0, 0, 1, -8)
+        -- Width = icon(16+6) + label text width + padding(14*2)
+        local _ts = game:GetService("TextService")
+        local _tw = _ts:GetTextSize(tabName, 13, Enum.Font.GothamBold, Vector2.new(999,999)).X
+        local _iw = (iconId and iconId ~= "") and 22 or 0
+        Tab.Size = UDim2.new(0, _tw + _iw + 28, 1, -8)
         Tab.Text = ""
         Tab.LayoutOrder = isConfigTab and 999 or TabCount
         Tab.Name = "Tab"
