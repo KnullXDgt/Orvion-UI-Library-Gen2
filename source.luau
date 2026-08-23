@@ -4413,14 +4413,14 @@ function Orvion:CreateWindow(config)
 
             for _, tabFrame in TabScroll:GetChildren() do
                 if tabFrame.Name == "Tab" then
-                    tabFrame.BackgroundTransparency = 0.935
-                    tabFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    tabFrame.BackgroundTransparency = 0.75
+                    tabFrame.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
                 end
             end
 
             TabContentContainer.Visible = true
             Tab.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
-            Tab.BackgroundTransparency = 0.3
+            Tab.BackgroundTransparency = 0.2
             CurrentTab = tabName
             UpdateContentSize()
         end
