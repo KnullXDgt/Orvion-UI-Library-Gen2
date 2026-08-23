@@ -946,13 +946,13 @@ function Orvion:CreateWindow(config)
     Main.Parent = DropShadow
     searchHolder=Instance.new("Frame"); searchHolder.Name="SearchHolder"
     searchHolder.BackgroundTransparency=1; searchHolder.BorderSizePixel=0
-    searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,83)
+    searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,39)
     searchHolder.ZIndex=15; searchHolder.ClipsDescendants=true; searchHolder.Parent=Main
     local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(255,255,255)
     sCard.BackgroundTransparency=0.93; sCard.BorderSizePixel=0
     sCard.Size=UDim2.new(1,-16,0,36); sCard.Position=UDim2.new(0,8,0,4)
     sCard.ZIndex=16; sCard.Parent=searchHolder
-    Instance.new("UICorner",sCard).CornerRadius=UDim.new(0,6)
+    Instance.new("UICorner",sCard).CornerRadius=UDim.new(1,0)
     local sIH=Instance.new("ImageLabel"); sIH.Image="rbxassetid://121018724060431"
     sIH.BackgroundTransparency=1; sIH.AnchorPoint=Vector2.new(0,0.5)
     sIH.Position=UDim2.new(0,8,0.5,0); sIH.Size=UDim2.new(0,14,0,14)
@@ -976,13 +976,11 @@ function Orvion:CreateWindow(config)
     local function openSearch()
         searchActive=true
         TweenService:Create(searchHolder,TIS,{Size=UDim2.new(1,0,0,44)}):Play()
-        if _CFref then TweenService:Create(_CFref,TIS,{Position=UDim2.new(0,0,0,127),Size=UDim2.new(1,0,1,-127)}):Play() end
         task.delay(0.15,function() pcall(function() newSTB:CaptureFocus() end) end)
     end
     local function closeSearch()
         searchActive=false; closeSearchResults()
         TweenService:Create(searchHolder,TIS,{Size=UDim2.new(1,0,0,0)}):Play()
-        if _CFref then TweenService:Create(_CFref,TIS,{Position=UDim2.new(0,0,0,83),Size=UDim2.new(1,0,1,-83)}):Play() end
         newSTB.Text=""; pcall(function() newSTB:ReleaseFocus() end)
     end
     Orvion._setSearchContent=function(cf) end -- no-op, use SearchSections
@@ -1641,8 +1639,8 @@ function Orvion:CreateWindow(config)
     ContentScroll.Name = "ContentScroll"
     ContentScroll.Parent = ContentFrame
     local ContentPad = Instance.new("UIPadding")
-    ContentPad.PaddingLeft = UDim.new(0, 10)
-    ContentPad.PaddingRight = UDim.new(0, 10)
+    ContentPad.PaddingLeft = UDim.new(0, 12)
+    ContentPad.PaddingRight = UDim.new(0, 12)
     ContentPad.PaddingTop = UDim.new(0, 6)
     ContentPad.PaddingBottom = UDim.new(0, 6)
     ContentPad.Parent = ContentScroll
@@ -4311,7 +4309,7 @@ function Orvion:CreateWindow(config)
         local _ts = game:GetService("TextService")
         local _tw = _ts:GetTextSize(tabName, 13, Enum.Font.GothamBold, Vector2.new(999,999)).X
         local _iw = (iconId and iconId ~= "") and 22 or 0
-        Tab.Size = UDim2.new(0, _tw + _iw + 41, 1, -8)
+        Tab.Size = UDim2.new(0, _tw + _iw + 45, 1, -8)
         Tab.Text = ""
         Tab.LayoutOrder = isConfigTab and 999 or TabCount
         Tab.Name = "Tab"
@@ -4326,12 +4324,12 @@ function Orvion:CreateWindow(config)
         TabPillLayout.FillDirection = Enum.FillDirection.Horizontal
         TabPillLayout.VerticalAlignment = Enum.VerticalAlignment.Center
         TabPillLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        TabPillLayout.Padding = UDim.new(0, 6)
+        TabPillLayout.Padding = UDim.new(0, 3)
         TabPillLayout.Parent = Tab
 
         local TabPillPad = Instance.new("UIPadding")
-        TabPillPad.PaddingLeft = UDim.new(0, 18)
-        TabPillPad.PaddingRight = UDim.new(0, 18)
+        TabPillPad.PaddingLeft = UDim.new(0, 22)
+        TabPillPad.PaddingRight = UDim.new(0, 22)
         TabPillPad.Parent = Tab
 
 
@@ -4410,7 +4408,7 @@ function Orvion:CreateWindow(config)
 
             TabContentContainer.Visible = true
             Tab.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
-            Tab.BackgroundTransparency = 0.1
+            Tab.BackgroundTransparency = 0.3
             CurrentTab = tabName
             UpdateContentSize()
         end
