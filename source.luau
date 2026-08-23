@@ -4349,7 +4349,14 @@ function Orvion:CreateWindow(config)
         FeatureImg.Name = "FeatureImg"
         FeatureImg.Parent = Tab
 
-
+        local ChooseFrame = Instance.new("Frame")
+        ChooseFrame.BackgroundTransparency = 1
+        ChooseFrame.BorderSizePixel = 0
+        ChooseFrame.Position = UDim2.new(0, 0, 0, 9)
+        ChooseFrame.Size = UDim2.new(0, 3, 0, 12)
+        ChooseFrame.Name = "ChooseFrame"
+        ChooseFrame.Parent = Tab
+        ChooseFrame.Visible = false
 
         table.insert(ConfigSystem.TabElements, Tab)
 
@@ -4383,11 +4390,14 @@ function Orvion:CreateWindow(config)
 
             for _, tabFrame in TabScroll:GetChildren() do
                 if tabFrame:IsA("Frame") and tabFrame.Name == "Tab" then
+                    local chooseFrame = tabFrame:FindFirstChild("ChooseFrame")
+                    if chooseFrame then chooseFrame.Visible = false end
                     tabFrame.BackgroundTransparency = 0.999
                 end
             end
 
             TabContentContainer.Visible = true
+            ChooseFrame.Visible = true
             Tab.BackgroundTransparency = 0.92
             CurrentTab = tabName
             UpdateContentSize()
