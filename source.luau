@@ -776,7 +776,7 @@ local function setupCloseModal(closeBtn, main, screenGui)
     overlay.BorderSizePixel = 0
     overlay.Size = UDim2.new(1, 0, 1, 0)
     overlay.ZIndex = 50
-    overlay.Active = true
+    overlay.-- Active removed: Frame.Active=true blocks input (Delta compat)
     overlay.Visible = false
     overlay.Parent = main
     local dialog = Instance.new("Frame")
@@ -1261,7 +1261,7 @@ function Orvion:CreateWindow(config)
     SearchBar.Position = UDim2.new(0, 0, 0, 6)
     SearchBar.Size = UDim2.new(1, 0, 0, 30)
     SearchBar.ZIndex = 20
-    SearchBar.Active = true
+    SearchBar.-- Active removed: Frame.Active=true blocks input (Delta compat)
     SearchBar.Parent = TabFrame
 
     local SearchBarCorner = Instance.new("UICorner")
@@ -1631,7 +1631,7 @@ function Orvion:CreateWindow(config)
         TBSurface.BackgroundTransparency = 1
         TBSurface.Size = UDim2.new(1, 0, 1, 0)
         TBSurface.ZIndex = 102
-        TBSurface.Active = true
+        TBSurface.-- Active removed: Frame.Active=true blocks input (Delta compat)
 
         -- Drag logic via UserInputService (bukan element.InputChanged)
         -- -> mouse capture tidak putus saat cursor keluar element
