@@ -2391,9 +2391,10 @@ function Orvion:CreateWindow(config)
         DropdownButton.TextSize = 14
         DropdownButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         DropdownButton.BackgroundTransparency = 0.999
-        DropdownButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
         DropdownButton.BorderSizePixel = 0
-        DropdownButton.Size = UDim2.new(1, 0, 1, 0)
+        DropdownButton.AnchorPoint = Vector2.new(1, 0.5)
+        DropdownButton.Position = UDim2.new(1, -7, 0.5, 0)
+        DropdownButton.Size = UDim2.new(0, 148, 0, 30)
         DropdownButton.ZIndex = 13
         DropdownButton.Name = "DropdownButton"
         DropdownButton.Parent = Dropdown
