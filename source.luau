@@ -1465,7 +1465,7 @@ function Orvion:CreateWindow(config)
                                 SubLabel.Font = Enum.Font.Gotham
                                 SubLabel.Text = subtitleText
                                 SubLabel.TextColor3 = Color3.fromRGB(120, 120, 140)
-                                SubLabel.TextSize = 9
+                                SubLabel.TextSize = 11
                                 SubLabel.TextXAlignment = Enum.TextXAlignment.Left
                                 SubLabel.TextTruncate = Enum.TextTruncate.AtEnd
                                 SubLabel.BackgroundTransparency = 1
