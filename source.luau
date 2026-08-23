@@ -1324,6 +1324,7 @@ function Orvion:CreateWindow(config)
     local SearchSections = {}
     local TabContents = {}
     local TabSwitchFns = {}
+    local TabCount = 0
     local ContentScroll = nil
     -- helper: sum Size.Y.Offset of children above stopAt (reliable, no render needed)
     local function sumChildH(container, stopAt)
