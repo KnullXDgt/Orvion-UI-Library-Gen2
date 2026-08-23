@@ -4798,13 +4798,16 @@ function Orvion:CreateWindow(config)
         if not tabContainer or not tabContainer:IsA("Frame") then return end
         local LP = game:GetService("Players").LocalPlayer
         local WelcomeCard = Instance.new("Frame")
-        WelcomeCard.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+        WelcomeCard.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         WelcomeCard.BackgroundTransparency = 0.935
         WelcomeCard.BorderSizePixel = 0
         WelcomeCard.Size = UDim2.new(1, 0, 0, 88)
         WelcomeCard.LayoutOrder = 0
         WelcomeCard.Name = "WelcomeCard"
         WelcomeCard.Parent = tabContainer
+        local WelcomeCardCorner = Instance.new("UICorner")
+        WelcomeCardCorner.CornerRadius = UDim.new(0, 4)
+        WelcomeCardCorner.Parent = WelcomeCard
         local AvatarFrame = Instance.new("Frame")
         AvatarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 65)
         AvatarFrame.BorderSizePixel = 0
