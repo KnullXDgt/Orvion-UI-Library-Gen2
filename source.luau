@@ -1338,7 +1338,7 @@ function Orvion:CreateWindow(config)
     SearchResults.BorderSizePixel = 0
     SearchResults.Position = UDim2.new(0, 0, 0, 44)
     SearchResults.Size = UDim2.new(1, 0, 0, 0)
-    SearchResults.ScrollBarThickness = 2
+    SearchResults.ScrollBarThickness = 0
     SearchResults.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 170)
     SearchResults.ClipsDescendants = true
     SearchResults.ZIndex = 50
@@ -2634,12 +2634,12 @@ function Orvion:CreateWindow(config)
                 local halfCF = math.floor(cfW / 2)
                 local rightW = cfW - halfCF - 4
                 local targetH = math.floor(Main.AbsoluteSize.Y - 16)
-                DropdownList.Position = UDim2.new(0, 138 + halfCF + rightW, 0, 8)
+                DropdownList.Position = UDim2.new(0, halfCF + rightW, 0, 8)
                 DropdownList.Size = UDim2.new(0, 0, 0, targetH)
                 DropdownList.Visible = true
                 TweenService:Create(DropdownList, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
                     Size = UDim2.new(0, rightW, 0, targetH),
-                    Position = UDim2.new(0, 138 + halfCF, 0, 8)
+                    Position = UDim2.new(0, halfCF, 0, 8)
                 }):Play()
                 -- Close any other open dropdown first
                 if Orvion._activeDropdownClose then Orvion._activeDropdownClose() end
@@ -2679,7 +2679,7 @@ function Orvion:CreateWindow(config)
                 Orvion._activeDropdownClose = nil
                 TweenService:Create(DropdownList, TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
                     Size = UDim2.new(0, 0, 0, DropdownList.Size.Y.Offset),
-                    Position = UDim2.new(0, 138 + halfCF3 + rightW3, 0, 8)
+                    Position = UDim2.new(0, halfCF3 + rightW3, 0, 8)
                 }):Play()
                 task.delay(0.18, function()
                     DropdownList.Visible = false
