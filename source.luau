@@ -936,6 +936,8 @@ function Orvion:CreateWindow(config)
     Main.Name = "Main"
     Main.Parent = DropShadow
     -- ====== HEADER SEARCH BAR (slide-in, Rayfield style) ======
+    -- Forward declare SearchBtnIcon for upvalue capture
+    local SearchBtnIcon = nil
     -- Forward refs for tween targets (assigned later without local)
     local _TabFrame_ref = nil
     local _ContentFrame_ref = nil
@@ -1313,7 +1315,7 @@ function Orvion:CreateWindow(config)
     SearchBtn.Name = "SearchBtn"
     SearchBtn.Parent = Top
 
-    local SearchBtnIcon = Instance.new("ImageLabel")
+    SearchBtnIcon = Instance.new("ImageLabel")
     SearchBtnIcon.Image = "rbxassetid://121018724060431"
     SearchBtnIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     SearchBtnIcon.BackgroundTransparency = 0.999
@@ -4084,22 +4086,12 @@ function Orvion:CreateWindow(config)
 
 
 
-        -- register in SearchSections for live search
+-- SearchSections ref removed
         local rawName = (tabContainer and tabContainer.Name) or ""
         local tabName = rawName ~= "" and rawName:gsub("Content$", "") or nil
         if tabName and title and title ~= "" then
             local secTitle = (title or ""):gsub("^%s+", "")
-            table.insert(SearchSections, {
-                title   = secTitle,
-                tabName = tabName,
-                secFrame = SectionFrame,
-                openFn  = function()
-                    if not isOpen then
-                        isOpen = true
-                        updateSize()
-                    end
-                end,
-            })
+-- SearchSections removed
         end
 
         updateSize()
