@@ -2729,11 +2729,11 @@ function Orvion:CreateWindow(config)
 
             local ChooseFrame = Instance.new("Frame")
             ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
-            ChooseFrame.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+            ChooseFrame.BackgroundColor3 = Color3.fromRGB(150, 150, 170)
             ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
             ChooseFrame.BorderSizePixel = 0
             ChooseFrame.Position = UDim2.new(0, 2, 0.5, 0)
-            ChooseFrame.Size = UDim2.new(0, 0, 0, 0)
+            ChooseFrame.Size = UDim2.new(0, 3, 0, 12)
             ChooseFrame.Name = "ChooseFrame"
             ChooseFrame.ZIndex = 15
             ChooseFrame.Parent = Option
@@ -4305,7 +4305,7 @@ function Orvion:CreateWindow(config)
         local _ts = game:GetService("TextService")
         local _tw = _ts:GetTextSize(tabName, 13, Enum.Font.GothamBold, Vector2.new(999,999)).X
         local _iw = (iconId and iconId ~= "") and 22 or 0
-        Tab.Size = UDim2.new(0, _tw + _iw + 28, 1, -8)
+        Tab.Size = UDim2.new(0, _tw + _iw + 37, 1, -8)
         Tab.Text = ""
         Tab.LayoutOrder = isConfigTab and 999 or TabCount
         Tab.Name = "Tab"
@@ -4315,12 +4315,6 @@ function Orvion:CreateWindow(config)
         TabCorner.CornerRadius = UDim.new(1, 0)
         TabCorner.Parent = Tab
 
-        local TabStroke = Instance.new("UIStroke")
-        TabStroke.Color = Color3.fromRGB(255, 255, 255)
-        TabStroke.Transparency = 0.7
-        TabStroke.Thickness = 1
-        TabStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-        TabStroke.Parent = Tab
 
         local TabPillLayout = Instance.new("UIListLayout")
         TabPillLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -4341,7 +4335,7 @@ function Orvion:CreateWindow(config)
         TabNameLabel.Text = tabName
         TabNameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         TabNameLabel.TextSize = 13
-        TabNameLabel.TextXAlignment = Enum.TextXAlignment.Left
+        TabNameLabel.TextXAlignment = Enum.TextXAlignment.Center
         TabNameLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         TabNameLabel.BackgroundTransparency = 0.999
         TabNameLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -4366,10 +4360,10 @@ function Orvion:CreateWindow(config)
         ChooseFrame.BackgroundTransparency = 1
         ChooseFrame.BorderSizePixel = 0
         ChooseFrame.Position = UDim2.new(0, 0, 0, 9)
-        ChooseFrame.Size = UDim2.new(0, 0, 0, 0)
+        ChooseFrame.Size = UDim2.new(0, 3, 0, 12)
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Tab
-        ChooseFrame.Visible = false
+        ChooseFrame.Visible = true
 
         table.insert(ConfigSystem.TabElements, Tab)
 
@@ -4403,18 +4397,14 @@ function Orvion:CreateWindow(config)
 
             for _, tabFrame in TabScroll:GetChildren() do
                 if tabFrame.Name == "Tab" then
-                    local chooseFrame = tabFrame:FindFirstChild("ChooseFrame")
-                    if chooseFrame then chooseFrame.Visible = false end
                     tabFrame.BackgroundTransparency = 0.5
-                    local tnl = tabFrame:FindFirstChild("TabName")
-                    if tnl then tnl.TextColor3 = Color3.fromRGB(160,160,180) end
+                    tabFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
                 end
             end
 
             TabContentContainer.Visible = true
-            ChooseFrame.Visible = true
+            Tab.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
             Tab.BackgroundTransparency = 0.1
-            TabNameLabel.TextColor3 = Color3.fromRGB(255,255,255)
             CurrentTab = tabName
             UpdateContentSize()
         end
