@@ -1823,7 +1823,7 @@ function Orvion:CreateWindow(config)
         local lastClick = 0
         ClickDetector.Activated:Connect(
             function()
-                local now = 0
+                local now = workspace.DistributedGameTime
                 if now - lastClick < 0.3 then
                     return
                 end
