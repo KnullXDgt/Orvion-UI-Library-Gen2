@@ -948,7 +948,7 @@ function Orvion:CreateWindow(config)
     searchHolder.BackgroundTransparency=1; searchHolder.BorderSizePixel=0
     searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,39)
     searchHolder.ZIndex=15; searchHolder.ClipsDescendants=true; searchHolder.Parent=Main
-    local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(40,40,55)
+    local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(30,30,30)
     sCard.BackgroundTransparency=0.5; sCard.BorderSizePixel=0
     sCard.Size=UDim2.new(1,-16,0,36); sCard.Position=UDim2.new(0,8,0,4)
     sCard.ZIndex=16; sCard.Parent=searchHolder
@@ -2635,7 +2635,7 @@ function Orvion:CreateWindow(config)
                 if cfW < 10 then cfW = 300 end
                 local halfCF = math.floor(cfW / 2)
                 local rightW = cfW - halfCF - 4
-                local targetH = math.max(100, math.floor(Main.AbsoluteSize.Y - 91))
+                local targetH = Main.AbsoluteSize.Y > 50 and math.floor(Main.AbsoluteSize.Y - 16) or 250
                 DropdownList.Position = UDim2.new(0, halfCF + rightW, 0, 8)
                 DropdownList.Size = UDim2.new(0, 0, 0, targetH)
                 DropdownList.Visible = true
@@ -4314,7 +4314,7 @@ function Orvion:CreateWindow(config)
     local function CreateTabButton(tabName, iconId, isConfigTab)
         TabCount = TabCount + 1
         local Tab = Instance.new("TextButton")
-        Tab.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+        Tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         Tab.BackgroundTransparency = 0.5
         Tab.BorderSizePixel = 0
         -- Width = icon(16+6) + label text width + padding(14*2)
@@ -4414,7 +4414,7 @@ function Orvion:CreateWindow(config)
             for _, tabFrame in TabScroll:GetChildren() do
                 if tabFrame.Name == "Tab" then
                     tabFrame.BackgroundTransparency = 0.5
-                    tabFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+                    tabFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 end
             end
 
