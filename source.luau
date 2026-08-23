@@ -1489,8 +1489,9 @@ function Orvion:CreateWindow(config)
                                         ContentScroll.CanvasPosition = Vector2.new(0, scrollTo)
                                         flashElem(capElem)
                                     end)
-                                    SearchTextBox.Text = ""
+                                    newSTB.Text = ""
                                     closeSearchResults()
+                                    closeSearch()
                                 end)
                             end
                             break
@@ -1566,8 +1567,9 @@ function Orvion:CreateWindow(config)
                                         ContentScroll.CanvasPosition = Vector2.new(0, scrollTo)
                                         flashElem(capElem)
                                     end)
-                                    SearchTextBox.Text = ""
+                                    newSTB.Text = ""
                                     closeSearchResults()
+                                    closeSearch()
                                 end)
                             end
                             break
@@ -1587,7 +1589,7 @@ function Orvion:CreateWindow(config)
             if found == 0 then contentH = 30 end
             local targetH = math.max(30, math.min(contentH, 150))
             SearchResults.CanvasSize = UDim2.new(0, 0, 0, contentH)
-            SearchResults.Size = UDim2.new(0, 120, 0, targetH)
+            SearchResults.Size = UDim2.new(1, -16, 0, targetH)
             SearchResults.Visible = true
             searchResultsOpen = true
         end)
