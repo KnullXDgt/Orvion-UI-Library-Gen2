@@ -935,6 +935,10 @@ function Orvion:CreateWindow(config)
     Main.Size = UDim2.new(1, -47, 1, -47)
     Main.Name = "Main"
     Main.Parent = DropShadow
+    local SearchBtn = nil
+    local SearchBtnIcon = nil
+    local SearchTextBox = nil
+    local SearchCloseBtn = nil
     -- ====== SEARCH OVERLAY ======
     local SearchOverlay = Instance.new("Frame")
     SearchOverlay.Name = "SearchOverlay"
@@ -957,7 +961,7 @@ function Orvion:CreateWindow(config)
     SearchInputFrame.Parent = SearchOverlay
     Instance.new("UICorner", SearchInputFrame).CornerRadius = UDim.new(0, 8)
 
-    local SearchTextBox = Instance.new("TextBox")
+    SearchTextBox = Instance.new("TextBox")
     SearchTextBox.Font = Enum.Font.GothamBold
     SearchTextBox.PlaceholderText = "Search features..."
     SearchTextBox.Text = ""
@@ -972,7 +976,7 @@ function Orvion:CreateWindow(config)
     SearchTextBox.ClearTextOnFocus = false
     SearchTextBox.Parent = SearchInputFrame
 
-    local SearchCloseBtn = Instance.new("TextButton")
+    SearchCloseBtn = Instance.new("TextButton")
     SearchCloseBtn.Text = ""
     SearchCloseBtn.BackgroundTransparency = 0.999
     SearchCloseBtn.BorderSizePixel = 0
@@ -1022,15 +1026,7 @@ function Orvion:CreateWindow(config)
         applySearch("")
     end
 
-    SearchBtn.Activated:Connect(function()
-        if searchActive then closeSearch() else openSearch() end
-    end)
-    SearchCloseBtn.Activated:Connect(closeSearch)
-    pcall(function()
-        SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-            applySearch(SearchTextBox.Text)
-        end)
-    end)
+    -- connections wired below after SearchBtn is created
 
     Orvion._setSearchContent = function(cf)
         currentSearchContent = cf
@@ -1297,6 +1293,17 @@ function Orvion:CreateWindow(config)
     SearchBtnIcon.Size = UDim2.new(1, -8, 1, -8)
     SearchBtnIcon.Parent = SearchBtn
 
+    -- Wire connections now that SearchBtn/SearchBtnIcon exist
+    SearchBtn.Activated:Connect(function()
+        if searchActive then closeSearch() else openSearch() end
+    end)
+    SearchCloseBtn.Activated:Connect(closeSearch)
+    pcall(function()
+        SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+            applySearch(SearchTextBox.Text)
+        end)
+    end)
+
     local ResizeHandle = nil
     if Resizable then
         ResizeHandle = Instance.new("TextButton")
@@ -1395,7 +1402,7 @@ function Orvion:CreateWindow(config)
     SearchIcon.ZIndex = 22
     SearchIcon.Parent = SearchBar
 
-    local SearchTextBox = Instance.new("TextBox")
+    SearchTextBox = Instance.new("TextBox")
     SearchTextBox.Font = Enum.Font.Gotham
     SearchTextBox.PlaceholderText = "Search Features..."
     SearchTextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 110)
