@@ -4298,8 +4298,8 @@ function Orvion:CreateWindow(config)
     local function CreateTabButton(tabName, iconId, isConfigTab)
         TabCount = TabCount + 1
         local Tab = Instance.new("TextButton")
-        Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Tab.BackgroundTransparency = 0.999
+        Tab.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+        Tab.BackgroundTransparency = 0.5
         Tab.BorderSizePixel = 0
         -- Width = icon(16+6) + label text width + padding(14*2)
         local _ts = game:GetService("TextService")
@@ -4314,6 +4314,13 @@ function Orvion:CreateWindow(config)
         local TabCorner = Instance.new("UICorner")
         TabCorner.CornerRadius = UDim.new(1, 0)
         TabCorner.Parent = Tab
+
+        local TabStroke = Instance.new("UIStroke")
+        TabStroke.Color = Color3.fromRGB(255, 255, 255)
+        TabStroke.Transparency = 0.7
+        TabStroke.Thickness = 1
+        TabStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        TabStroke.Parent = Tab
 
         local TabPillLayout = Instance.new("UIListLayout")
         TabPillLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -4359,7 +4366,7 @@ function Orvion:CreateWindow(config)
         ChooseFrame.BackgroundTransparency = 1
         ChooseFrame.BorderSizePixel = 0
         ChooseFrame.Position = UDim2.new(0, 0, 0, 9)
-        ChooseFrame.Size = UDim2.new(0, 3, 0, 12)
+        ChooseFrame.Size = UDim2.new(0, 0, 0, 0)
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Tab
         ChooseFrame.Visible = false
@@ -4398,13 +4405,16 @@ function Orvion:CreateWindow(config)
                 if tabFrame.Name == "Tab" then
                     local chooseFrame = tabFrame:FindFirstChild("ChooseFrame")
                     if chooseFrame then chooseFrame.Visible = false end
-                    tabFrame.BackgroundTransparency = 0.999
+                    tabFrame.BackgroundTransparency = 0.5
+                    local tnl = tabFrame:FindFirstChild("TabName")
+                    if tnl then tnl.TextColor3 = Color3.fromRGB(160,160,180) end
                 end
             end
 
             TabContentContainer.Visible = true
             ChooseFrame.Visible = true
-            Tab.BackgroundTransparency = 0.92
+            Tab.BackgroundTransparency = 0.1
+            TabNameLabel.TextColor3 = Color3.fromRGB(255,255,255)
             CurrentTab = tabName
             UpdateContentSize()
         end
@@ -4415,7 +4425,6 @@ function Orvion:CreateWindow(config)
         Tab.Activated:Connect(
             function()
                 if Orvion._activeDropdownClose then Orvion._activeDropdownClose() end
-                CircleClick(Tab, Mouse.X, Mouse.Y)
                 if Orvion._setSearchContent then Orvion._setSearchContent(TabContentContainer) end
                 SwitchToTab()
             end
