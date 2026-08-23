@@ -1451,7 +1451,7 @@ function Orvion:CreateWindow(config)
                                 MainLabel.Font = Enum.Font.GothamBold
                                 MainLabel.Text = displayText
                                 MainLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
-                                MainLabel.TextSize = 13
+                                MainLabel.TextSize = 14
                                 MainLabel.TextXAlignment = Enum.TextXAlignment.Left
                                 MainLabel.TextTruncate = Enum.TextTruncate.AtEnd
                                 MainLabel.BackgroundTransparency = 1
@@ -1465,7 +1465,7 @@ function Orvion:CreateWindow(config)
                                 SubLabel.Font = Enum.Font.Gotham
                                 SubLabel.Text = subtitleText
                                 SubLabel.TextColor3 = Color3.fromRGB(120, 120, 140)
-                                SubLabel.TextSize = 11
+                                SubLabel.TextSize = 12
                                 SubLabel.TextXAlignment = Enum.TextXAlignment.Left
                                 SubLabel.TextTruncate = Enum.TextTruncate.AtEnd
                                 SubLabel.BackgroundTransparency = 1
