@@ -948,8 +948,8 @@ function Orvion:CreateWindow(config)
     searchHolder.BackgroundTransparency=1; searchHolder.BorderSizePixel=0
     searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,39)
     searchHolder.ZIndex=15; searchHolder.ClipsDescendants=true; searchHolder.Parent=Main
-    local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(255,255,255)
-    sCard.BackgroundTransparency=0.93; sCard.BorderSizePixel=0
+    local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(40,40,55)
+    sCard.BackgroundTransparency=0.3; sCard.BorderSizePixel=0
     sCard.Size=UDim2.new(1,-16,0,36); sCard.Position=UDim2.new(0,8,0,4)
     sCard.ZIndex=16; sCard.Parent=searchHolder
     Instance.new("UICorner",sCard).CornerRadius=UDim.new(1,0)
