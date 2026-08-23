@@ -1024,13 +1024,7 @@ function Orvion:CreateWindow(config)
         applySearch("")
     end
 
-    SearchBtn.Activated:Connect(function()
-        if searchActive then closeSearch() else openSearch() end
-    end)
-    SearchCloseBtn.Activated:Connect(closeSearch)
-    SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-        applySearch(SearchTextBox.Text)
-    end)
+    -- connections wired below after SearchBtn is created
 
     Orvion._setSearchContent = function(cf)
         currentSearchContent = cf
@@ -1297,6 +1291,15 @@ function Orvion:CreateWindow(config)
     SearchBtnIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
     SearchBtnIcon.Size = UDim2.new(1, -8, 1, -8)
     SearchBtnIcon.Parent = SearchBtn
+
+    -- Wire search events (SearchBtn now declared)
+    SearchBtn.Activated:Connect(function()
+        if searchActive then closeSearch() else openSearch() end
+    end)
+    SearchCloseBtn.Activated:Connect(closeSearch)
+    SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+        applySearch(SearchTextBox.Text)
+    end)
 
     local ResizeHandle = nil
     if Resizable then
