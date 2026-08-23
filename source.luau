@@ -1756,6 +1756,14 @@ function Orvion:CreateWindow(config)
         Paragraph.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 50))
         Paragraph.AutomaticSize = Enum.AutomaticSize.Y
 
+    local function UpdateContentSize()
+        if CurrentTab and TabContents[CurrentTab] then
+            local OffsetY = 0
+            for _, child in TabContents[CurrentTab]:GetChildren() do
+                if child:IsA("Frame") then
+                    OffsetY = OffsetY + 8 + child.Size.Y.Offset
+                end
+
         UpdateContentSize()
 
         return Paragraph
