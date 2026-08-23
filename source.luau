@@ -934,13 +934,16 @@ function Orvion:CreateWindow(config)
     Main.Position = UDim2.new(0.5, 0, 0.5, 0)
     Main.Size = UDim2.new(1, -47, 1, -47)
     Main.Name = "Main"
-    -- Forward declares for search (upvalue safety)
     local SearchBtnIcon = nil
     local _TabFrame_ref = nil
     local _ContentFrame_ref = nil
+    local searchHolder = nil
+    local newSearchTextBox = nil
+    local searchCloseBtn = nil
+    local searchActive = false
+    local currentSearchContent = nil
     Main.Parent = DropShadow
-    -- SearchHolder (Rayfield slide-in style)
-    local searchHolder = Instance.new("Frame")
+    searchHolder = Instance.new("Frame")
     searchHolder.Name = "SearchHolder"
     searchHolder.BackgroundTransparency = 1
     searchHolder.BorderSizePixel = 0
@@ -958,16 +961,16 @@ function Orvion:CreateWindow(config)
     searchCard.ZIndex = 16
     searchCard.Parent = searchHolder
     Instance.new("UICorner", searchCard).CornerRadius = UDim.new(0, 6)
-    local searchIconHint = Instance.new("ImageLabel")
-    searchIconHint.Image = "rbxassetid://121018724060431"
-    searchIconHint.BackgroundTransparency = 1
-    searchIconHint.AnchorPoint = Vector2.new(0, 0.5)
-    searchIconHint.Position = UDim2.new(0, 8, 0.5, 0)
-    searchIconHint.Size = UDim2.new(0, 14, 0, 14)
-    searchIconHint.ImageTransparency = 0.4
-    searchIconHint.ZIndex = 17
-    searchIconHint.Parent = searchCard
-    local newSearchTextBox = Instance.new("TextBox")
+    local sIconHint = Instance.new("ImageLabel")
+    sIconHint.Image = "rbxassetid://121018724060431"
+    sIconHint.BackgroundTransparency = 1
+    sIconHint.AnchorPoint = Vector2.new(0, 0.5)
+    sIconHint.Position = UDim2.new(0, 8, 0.5, 0)
+    sIconHint.Size = UDim2.new(0, 14, 0, 14)
+    sIconHint.ImageTransparency = 0.4
+    sIconHint.ZIndex = 17
+    sIconHint.Parent = searchCard
+    newSearchTextBox = Instance.new("TextBox")
     newSearchTextBox.Font = Enum.Font.Gotham
     newSearchTextBox.PlaceholderText = "Search features..."
     newSearchTextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 110)
@@ -982,7 +985,7 @@ function Orvion:CreateWindow(config)
     newSearchTextBox.ClearTextOnFocus = false
     newSearchTextBox.ZIndex = 17
     newSearchTextBox.Parent = searchCard
-    local searchCloseBtn = Instance.new("TextButton")
+    searchCloseBtn = Instance.new("TextButton")
     searchCloseBtn.Text = ""
     searchCloseBtn.BackgroundTransparency = 0.999
     searchCloseBtn.BorderSizePixel = 0
@@ -991,50 +994,20 @@ function Orvion:CreateWindow(config)
     searchCloseBtn.Size = UDim2.new(0, 24, 0, 24)
     searchCloseBtn.ZIndex = 18
     searchCloseBtn.Parent = searchCard
-    local searchCloseIcon = Instance.new("ImageLabel")
-    searchCloseIcon.Image = "rbxassetid://9886659671"
-    searchCloseIcon.BackgroundTransparency = 1
-    searchCloseIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-    searchCloseIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    searchCloseIcon.Size = UDim2.new(0, 14, 0, 14)
-    searchCloseIcon.ImageTransparency = 0.2
-    searchCloseIcon.ZIndex = 19
-    searchCloseIcon.Parent = searchCloseBtn
-    local searchActive = false
-    local currentSearchContent = nil
-    local TI_SEARCH = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-    local function applySearch(query)
-        if not currentSearchContent then return end
-        query = query:lower()
-        for _, child in ipairs(currentSearchContent:GetChildren()) do
-            if child:IsA("Frame") and child.Name == "Collapsible" then
-                local hdr = child:FindFirstChildWhichIsA("TextButton")
-                if hdr then
-                    local title = hdr.Text:lower():gsub("^%s+", "")
-                    child.Visible = query == "" or title:find(query, 1, true) ~= nil
-                end
-            end
-        end
-    end
-    local function openSearch()
-        searchActive = true
-        TweenService:Create(searchHolder, TI_SEARCH, {Size=UDim2.new(1,0,0,44)}):Play()
-        if _TabFrame_ref then TweenService:Create(_TabFrame_ref,TI_SEARCH,{Position=UDim2.new(0,9,0,83)}):Play() end
-        if _ContentFrame_ref then TweenService:Create(_ContentFrame_ref,TI_SEARCH,{Position=UDim2.new(0,138,0,83),Size=UDim2.new(1,-147,1,-83)}):Play() end
-        if SearchBtnIcon then SearchBtnIcon.ImageColor3 = Color3.fromRGB(150,150,255) end
-        task.delay(0.15, function() pcall(function() newSearchTextBox:CaptureFocus() end) end)
-    end
-    local function closeSearch()
-        searchActive = false
-        TweenService:Create(searchHolder, TI_SEARCH, {Size=UDim2.new(1,0,0,0)}):Play()
-        if _TabFrame_ref then TweenService:Create(_TabFrame_ref,TI_SEARCH,{Position=UDim2.new(0,9,0,39)}):Play() end
-        if _ContentFrame_ref then TweenService:Create(_ContentFrame_ref,TI_SEARCH,{Position=UDim2.new(0,138,0,39),Size=UDim2.new(1,-147,1,-39)}):Play() end
-        newSearchTextBox.Text = ""
-        if SearchBtnIcon then SearchBtnIcon.ImageColor3 = Color3.fromRGB(255,255,255) end
-        pcall(function() newSearchTextBox:ReleaseFocus() end)
-        applySearch("")
-    end
-    Orvion._setSearchContent = function(cf) currentSearchContent=cf; if searchActive then applySearch(newSearchTextBox.Text) end end
+    local sCIcon = Instance.new("ImageLabel")
+    sCIcon.Image = "rbxassetid://9886659671"
+    sCIcon.BackgroundTransparency = 1
+    sCIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    sCIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+    sCIcon.Size = UDim2.new(0, 14, 0, 14)
+    sCIcon.ImageTransparency = 0.2
+    sCIcon.ZIndex = 19
+    sCIcon.Parent = searchCloseBtn
+    -- Reparent SearchResults into searchHolder
+    SearchResults.Parent = searchHolder
+    SearchResults.Position = UDim2.new(0, 0, 0, 44)
+    SearchResults.Size = UDim2.new(1, 0, 0, 0)
+    SearchResults.ZIndex = 20
 
 
     local UICorner = Instance.new("UICorner")
@@ -1296,11 +1269,12 @@ function Orvion:CreateWindow(config)
     SearchBtnIcon.Parent = SearchBtn
     SearchBtn.Activated:Connect(function() if searchActive then closeSearch() else openSearch() end end)
     searchCloseBtn.Activated:Connect(closeSearch)
-    pcall(function() newSearchTextBox:GetPropertyChangedSignal("Text"):Connect(function() applySearch(newSearchTextBox.Text) end) end)
-    local _lstxt=""; local _spoll; _spoll=game:GetService("RunService").Heartbeat:Connect(function()
-        if not newSearchTextBox or not newSearchTextBox.Parent then if _spoll then _spoll:Disconnect() end; return end
-        local t=newSearchTextBox.Text; if t~=_lstxt then _lstxt=t; pcall(applySearch,t) end
+    pcall(function() newSearchTextBox:GetPropertyChangedSignal("Text"):Connect(function() buildSearchResults(newSearchTextBox.Text) end) end)
+    local _lt=""; local _sc; _sc=game:GetService("RunService").Heartbeat:Connect(function()
+        if not newSearchTextBox or not newSearchTextBox.Parent then if _sc then _sc:Disconnect() end; return end
+        local t=newSearchTextBox.Text; if t~=_lt then _lt=t; pcall(buildSearchResults,t) end
     end)
+    newSearchTextBox.FocusLost:Connect(function() if newSearchTextBox.Text=="" then closeSearch() end end)
 
     local ResizeHandle = nil
     if Resizable then
@@ -1377,69 +1351,6 @@ function Orvion:CreateWindow(config)
     TabTopPadding.PaddingTop = UDim.new(0, 4)
     TabTopPadding.Parent = TabScroll
 
-    -- Search bar
-    local SearchBar = Instance.new("Frame")
-    SearchBar.Name = "SearchBar"
-    SearchBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    SearchBar.BackgroundTransparency = 0.93
-    SearchBar.BorderSizePixel = 0
-    SearchBar.Position = UDim2.new(0, 0, 0, 6)
-    SearchBar.Size = UDim2.new(1, 0, 0, 30)
-    SearchBar.ZIndex = 20
-    SearchBar.Parent = TabFrame
-
-    local SearchBarCorner = Instance.new("UICorner")
-    SearchBarCorner.CornerRadius = UDim.new(0, 4)
-    SearchBarCorner.Parent = SearchBar
-
-    local SearchIcon = Instance.new("ImageLabel")
-    SearchIcon.Image = "rbxassetid://109869955247116"
-    SearchIcon.BackgroundTransparency = 1
-    SearchIcon.Position = UDim2.new(0, 5, 0.5, 0)
-    SearchIcon.AnchorPoint = Vector2.new(0, 0.5)
-    SearchIcon.Size = UDim2.new(0, 14, 0, 14)
-    SearchIcon.ZIndex = 22
-    SearchIcon.Parent = SearchBar
-
-    local SearchTextBox = Instance.new("TextBox")
-    SearchTextBox.Font = Enum.Font.Gotham
-    SearchTextBox.PlaceholderText = "Search Features..."
-    SearchTextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 110)
-    SearchTextBox.Text = ""
-    SearchTextBox.TextColor3 = Color3.fromRGB(230, 230, 230)
-    SearchTextBox.TextSize = 11
-    SearchTextBox.TextXAlignment = Enum.TextXAlignment.Left
-    SearchTextBox.BackgroundTransparency = 1
-    SearchTextBox.BorderSizePixel = 0
-    SearchTextBox.Position = UDim2.new(0, 22, 0, 0)
-    SearchTextBox.Size = UDim2.new(1, -24, 1, 0)
-    SearchTextBox.ClearTextOnFocus = false
-    SearchTextBox.ZIndex = 21
-    SearchTextBox.Parent = SearchBar
-
-    local SearchResults = Instance.new("ScrollingFrame")
-    local SearchResultsLayout = nil  -- forward, assigned below
-    SearchResults.Name = "SearchResults"
-    SearchResults.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
-    SearchResults.BorderSizePixel = 0
-    SearchResults.Position = UDim2.new(0, 9, 0, 75)
-    SearchResults.Size = UDim2.new(0, 120, 0, 0)
-    SearchResults.ScrollBarThickness = 2
-    SearchResults.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 170)
-    SearchResults.ClipsDescendants = true
-    SearchResults.ZIndex = 50
-    SearchResults.Visible = false
-    SearchResults.CanvasSize = UDim2.new(0, 0, 0, 0)
-    SearchResults.Parent = Main
-
-    local SearchResultsCorner = Instance.new("UICorner")
-    SearchResultsCorner.CornerRadius = UDim.new(0, 4)
-    SearchResultsCorner.Parent = SearchResults
-
-    SearchResultsLayout = Instance.new("UIListLayout")
-    SearchResultsLayout.Padding = UDim.new(0, 2)
-    SearchResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    SearchResultsLayout.Parent = SearchResults
 
     SearchResultsLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         SearchResults.CanvasSize = UDim2.new(0, 0, 0, SearchResultsLayout.AbsoluteContentSize.Y + 4)
@@ -1696,30 +1607,6 @@ function Orvion:CreateWindow(config)
     NoResultsLabel.Size = UDim2.new(1, 0, 0, 26)
     NoResultsLabel.ZIndex = 51
     NoResultsLabel.Visible = false
-
-    pcall(function()
-        SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-            buildSearchResults(SearchTextBox.Text)
-        end)
-    end)
-
-    -- polling backup (for executors where GetPropertyChangedSignal fails)
-    local _lastTxt = ""
-    task.spawn(function()
-        while true do
-            task.wait(0.1)
-            if not SearchTextBox or not SearchTextBox.Parent then break end
-            local t = SearchTextBox.Text
-            if t ~= _lastTxt then
-                _lastTxt = t
-                pcall(buildSearchResults, t)
-            end
-        end
-    end)
-
-    SearchTextBox.FocusLost:Connect(function()
-        if SearchTextBox.Text == "" then closeSearchResults() end
-    end)
 
     local ContentFrame = Instance.new("Frame")
     ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -4952,13 +4839,13 @@ function Orvion:CreateWindow(config)
             if ok and img then AI.Image=img end
         end)
         local NL = Instance.new("TextLabel")
-        NL.Font = Enum.Font.GothamBold; NL.Text = "Hey, "..LP.Name.."!"; NL.TextColor3 = Color3.fromRGB(240,240,255)
-        NL.TextSize = 14; NL.TextXAlignment = Enum.TextXAlignment.Left; NL.BackgroundTransparency = 1
-        NL.BorderSizePixel = 0; NL.Size = UDim2.new(1,-96,0,20); NL.Position = UDim2.new(0,82,0,24); NL.Parent = WC
+        NL.Font=Enum.Font.GothamBold; NL.Text="Hey, "..LP.Name.."!"; NL.TextColor3=Color3.fromRGB(240,240,255)
+        NL.TextSize=14; NL.TextXAlignment=Enum.TextXAlignment.Left; NL.BackgroundTransparency=1
+        NL.BorderSizePixel=0; NL.Size=UDim2.new(1,-96,0,20); NL.Position=UDim2.new(0,82,0,24); NL.Parent=WC
         local SL = Instance.new("TextLabel")
-        SL.Font = Enum.Font.GothamBold; SL.Text = "Welcome to Orvion Hub"; SL.TextColor3 = Color3.fromRGB(130,130,155)
-        SL.TextSize = 12; SL.TextXAlignment = Enum.TextXAlignment.Left; SL.BackgroundTransparency = 1
-        SL.BorderSizePixel = 0; SL.Size = UDim2.new(1,-96,0,16); SL.Position = UDim2.new(0,82,0,50); SL.Parent = WC
+        SL.Font=Enum.Font.GothamBold; SL.Text="Welcome to Orvion Hub"; SL.TextColor3=Color3.fromRGB(130,130,155)
+        SL.TextSize=12; SL.TextXAlignment=Enum.TextXAlignment.Left; SL.BackgroundTransparency=1
+        SL.BorderSizePixel=0; SL.Size=UDim2.new(1,-96,0,16); SL.Position=UDim2.new(0,82,0,50); SL.Parent=WC
     end
 
     function Window:Show()
