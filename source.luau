@@ -2634,7 +2634,7 @@ function Orvion:CreateWindow(config)
                 if cfW < 10 then cfW = 300 end
                 local halfCF = math.floor(cfW / 2)
                 local rightW = cfW - halfCF - 4
-                local targetH = math.min(200, math.floor(Main.AbsoluteSize.Y - 16))
+                local targetH = math.max(100, math.floor(Main.AbsoluteSize.Y - 91))
                 DropdownList.Position = UDim2.new(0, halfCF + rightW, 0, 8)
                 DropdownList.Size = UDim2.new(0, 0, 0, targetH)
                 DropdownList.Visible = true
@@ -2644,6 +2644,7 @@ function Orvion:CreateWindow(config)
                 }):Play()
                 -- Close any other open dropdown first
                 if Orvion._activeDropdownClose then Orvion._activeDropdownClose() end
+                pcall(function() ContentScroll.ScrollingEnabled = false end)
 
                 -- Stores close fn for this dropdown
                 Orvion._activeDropdownClose = function()
@@ -2652,6 +2653,7 @@ function Orvion:CreateWindow(config)
                     ResetSearch()
                     DropdownList.Visible = false
                     Orvion._activeDropdownClose = nil
+                    pcall(function() ContentScroll.ScrollingEnabled = true end)
                     if csConn then csConn:Disconnect(); csConn = nil end
                     local dOvr = Main:FindFirstChild("DropOverlay")
                     if dOvr then dOvr:Destroy() end
@@ -2685,6 +2687,7 @@ function Orvion:CreateWindow(config)
                 }):Play()
                 task.delay(0.18, function()
                     DropdownList.Visible = false
+                    pcall(function() ContentScroll.ScrollingEnabled = true end)
                     if csConn then csConn:Disconnect(); csConn = nil end
                     local dOvr = Main:FindFirstChild("DropOverlay")
                     if dOvr then dOvr:Destroy() end
