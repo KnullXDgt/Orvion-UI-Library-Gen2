@@ -4314,8 +4314,8 @@ function Orvion:CreateWindow(config)
     local function CreateTabButton(tabName, iconId, isConfigTab)
         TabCount = TabCount + 1
         local Tab = Instance.new("TextButton")
-        Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Tab.BackgroundTransparency = 0.5
+        Tab.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+        Tab.BackgroundTransparency = 0.75
         Tab.BorderSizePixel = 0
         -- Width = icon(16+6) + label text width + padding(14*2)
         local _ts = game:GetService("TextService")
