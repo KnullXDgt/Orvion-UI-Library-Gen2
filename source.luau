@@ -1640,6 +1640,12 @@ function Orvion:CreateWindow(config)
     ContentScroll.Size = UDim2.new(1, 0, 1, -6)
     ContentScroll.Name = "ContentScroll"
     ContentScroll.Parent = ContentFrame
+    local ContentPad = Instance.new("UIPadding")
+    ContentPad.PaddingLeft = UDim.new(0, 10)
+    ContentPad.PaddingRight = UDim.new(0, 10)
+    ContentPad.PaddingTop = UDim.new(0, 6)
+    ContentPad.PaddingBottom = UDim.new(0, 6)
+    ContentPad.Parent = ContentScroll
 
 
 
@@ -4209,7 +4215,7 @@ function Orvion:CreateWindow(config)
         HeaderBtn.Font = Enum.Font.GothamBold
         HeaderBtn.Text = "  " .. (title or "Section")
         HeaderBtn.TextColor3 = Color3.fromRGB(170, 170, 185)
-        HeaderBtn.TextSize = 14
+        HeaderBtn.TextSize = 15
         HeaderBtn.TextXAlignment = Enum.TextXAlignment.Left
         HeaderBtn.BorderSizePixel = 0
         HeaderBtn.Name = "HeaderBtn"
@@ -4305,7 +4311,7 @@ function Orvion:CreateWindow(config)
         local _ts = game:GetService("TextService")
         local _tw = _ts:GetTextSize(tabName, 13, Enum.Font.GothamBold, Vector2.new(999,999)).X
         local _iw = (iconId and iconId ~= "") and 22 or 0
-        Tab.Size = UDim2.new(0, _tw + _iw + 37, 1, -8)
+        Tab.Size = UDim2.new(0, _tw + _iw + 41, 1, -8)
         Tab.Text = ""
         Tab.LayoutOrder = isConfigTab and 999 or TabCount
         Tab.Name = "Tab"
@@ -4324,8 +4330,8 @@ function Orvion:CreateWindow(config)
         TabPillLayout.Parent = Tab
 
         local TabPillPad = Instance.new("UIPadding")
-        TabPillPad.PaddingLeft = UDim.new(0, 14)
-        TabPillPad.PaddingRight = UDim.new(0, 14)
+        TabPillPad.PaddingLeft = UDim.new(0, 18)
+        TabPillPad.PaddingRight = UDim.new(0, 18)
         TabPillPad.Parent = Tab
 
 
