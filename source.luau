@@ -4383,6 +4383,7 @@ function Orvion:CreateWindow(config)
 
             for _, tabFrame in TabScroll:GetChildren() do
                 if tabFrame:IsA("Frame") and tabFrame.Name == "Tab" then
+                    tabFrame.BackgroundTransparency = 0.999
                 end
             end
 
