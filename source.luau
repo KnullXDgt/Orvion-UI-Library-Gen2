@@ -949,7 +949,7 @@ function Orvion:CreateWindow(config)
     searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,39)
     searchHolder.ZIndex=15; searchHolder.ClipsDescendants=true; searchHolder.Parent=Main
     local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(40,40,55)
-    sCard.BackgroundTransparency=0.3; sCard.BorderSizePixel=0
+    sCard.BackgroundTransparency=0.5; sCard.BorderSizePixel=0
     sCard.Size=UDim2.new(1,-16,0,36); sCard.Position=UDim2.new(0,8,0,4)
     sCard.ZIndex=16; sCard.Parent=searchHolder
     Instance.new("UICorner",sCard).CornerRadius=UDim.new(1,0)
@@ -975,12 +975,14 @@ function Orvion:CreateWindow(config)
     local TIS=TweenInfo.new(0.22,Enum.EasingStyle.Quint,Enum.EasingDirection.Out)
     local function openSearch()
         searchActive=true
+        if _TFref then _TFref.Visible=false end
         TweenService:Create(searchHolder,TIS,{Size=UDim2.new(1,0,0,44)}):Play()
         task.delay(0.15,function() pcall(function() newSTB:CaptureFocus() end) end)
     end
     local function closeSearch()
         searchActive=false; closeSearchResults()
         TweenService:Create(searchHolder,TIS,{Size=UDim2.new(1,0,0,0)}):Play()
+        if _TFref then _TFref.Visible=true end
         newSTB.Text=""; pcall(function() newSTB:ReleaseFocus() end)
     end
     Orvion._setSearchContent=function(cf) end -- no-op, use SearchSections
@@ -1310,6 +1312,10 @@ function Orvion:CreateWindow(config)
     TabScroll.Size = UDim2.new(1, 0, 1, 0)
     TabScroll.ScrollingDirection = Enum.ScrollingDirection.X
     TabScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
+    local TabScrollPad = Instance.new("UIPadding")
+    TabScrollPad.PaddingLeft = UDim.new(0, 10)
+    TabScrollPad.PaddingRight = UDim.new(0, 10)
+    TabScrollPad.Parent = TabScroll
     TabScroll.Name = "TabScroll"
     TabScroll.Parent = TabFrame
 
