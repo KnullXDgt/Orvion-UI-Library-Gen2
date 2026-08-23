@@ -4324,20 +4324,7 @@ function Orvion:CreateWindow(config)
         TabPillPad.PaddingRight = UDim.new(0, 14)
         TabPillPad.Parent = Tab
 
-        local TabButton = Instance.new("TextButton")
-        TabButton.ZIndex = 10
-        TabButton.Font = Enum.Font.GothamBold
-        TabButton.Text = ""
-        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        TabButton.TextSize = 14
-        TabButton.TextXAlignment = Enum.TextXAlignment.Left
-        TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TabButton.BackgroundTransparency = 0.999
-        TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TabButton.BorderSizePixel = 0
-        TabButton.Size = UDim2.new(1, 0, 1, 0)
-        TabButton.Name = "TabButton"
-        TabButton.Parent = Tab
+
 
         local TabNameLabel = Instance.new("TextLabel")
         TabNameLabel.Font = Enum.Font.GothamBold
@@ -4420,11 +4407,12 @@ function Orvion:CreateWindow(config)
         end
 
         TabSwitchFns[tabName] = SwitchToTab
+        if TabCount == 1 then SwitchToTab() end
 
-        TabButton.Activated:Connect(
+        Tab.Activated:Connect(
             function()
                 if Orvion._activeDropdownClose then Orvion._activeDropdownClose() end
-                CircleClick(TabButton, Mouse.X, Mouse.Y)
+                CircleClick(Tab, Mouse.X, Mouse.Y)
                 if Orvion._setSearchContent then Orvion._setSearchContent(TabContentContainer) end
                 SwitchToTab()
             end
