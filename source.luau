@@ -946,7 +946,7 @@ function Orvion:CreateWindow(config)
     Main.Parent = DropShadow
     searchHolder=Instance.new("Frame"); searchHolder.Name="SearchHolder"
     searchHolder.BackgroundTransparency=1; searchHolder.BorderSizePixel=0
-    searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,39)
+    searchHolder.Size=UDim2.new(1,0,0,0); searchHolder.Position=UDim2.new(0,0,0,83)
     searchHolder.ZIndex=15; searchHolder.ClipsDescendants=true; searchHolder.Parent=Main
     local sCard=Instance.new("Frame"); sCard.BackgroundColor3=Color3.fromRGB(255,255,255)
     sCard.BackgroundTransparency=0.93; sCard.BorderSizePixel=0
@@ -976,15 +976,13 @@ function Orvion:CreateWindow(config)
     local function openSearch()
         searchActive=true
         TweenService:Create(searchHolder,TIS,{Size=UDim2.new(1,0,0,44)}):Play()
-        if _TFref then TweenService:Create(_TFref,TIS,{Position=UDim2.new(0,9,0,83)}):Play() end
-        if _CFref then TweenService:Create(_CFref,TIS,{Position=UDim2.new(0,138,0,83),Size=UDim2.new(1,-147,1,-83)}):Play() end
+        if _CFref then TweenService:Create(_CFref,TIS,{Position=UDim2.new(0,0,0,127),Size=UDim2.new(1,0,1,-127)}):Play() end
         task.delay(0.15,function() pcall(function() newSTB:CaptureFocus() end) end)
     end
     local function closeSearch()
         searchActive=false; closeSearchResults()
         TweenService:Create(searchHolder,TIS,{Size=UDim2.new(1,0,0,0)}):Play()
-        if _TFref then TweenService:Create(_TFref,TIS,{Position=UDim2.new(0,9,0,39)}):Play() end
-        if _CFref then TweenService:Create(_CFref,TIS,{Position=UDim2.new(0,138,0,39),Size=UDim2.new(1,-147,1,-39)}):Play() end
+        if _CFref then TweenService:Create(_CFref,TIS,{Position=UDim2.new(0,0,0,83),Size=UDim2.new(1,0,1,-83)}):Play() end
         newSTB.Text=""; pcall(function() newSTB:ReleaseFocus() end)
     end
     Orvion._setSearchContent=function(cf) end -- no-op, use SearchSections
@@ -1291,8 +1289,8 @@ function Orvion:CreateWindow(config)
     TabFrame.BackgroundTransparency = 0.999
     TabFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabFrame.BorderSizePixel = 0
-    TabFrame.Position = UDim2.new(0, 9, 0, 39)
-    TabFrame.Size = UDim2.new(0, 120, 1, -39)
+    TabFrame.Position = UDim2.new(0, 0, 0, 39)
+    TabFrame.Size = UDim2.new(1, 0, 0, 44)
     TabFrame.Name = "TabFrame"
     TabFrame.Parent = Main
     _TFref=TabFrame
@@ -1310,13 +1308,17 @@ function Orvion:CreateWindow(config)
     TabScroll.BackgroundTransparency = 0.999
     TabScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabScroll.BorderSizePixel = 0
-    TabScroll.Position = UDim2.new(0, 0, 0, 4)
-    TabScroll.Size = UDim2.new(1, 0, 1, -4)
+    TabScroll.Position = UDim2.new(0, 0, 0, 0)
+    TabScroll.Size = UDim2.new(1, 0, 1, 0)
+    TabScroll.ScrollingDirection = Enum.ScrollingDirection.X
+    TabScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
     TabScroll.Name = "TabScroll"
     TabScroll.Parent = TabFrame
 
     local TabLayout = Instance.new("UIListLayout")
-    TabLayout.Padding = UDim.new(0, 3)
+    TabLayout.FillDirection = Enum.FillDirection.Horizontal
+    TabLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    TabLayout.Padding = UDim.new(0, 8)
     TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabLayout.Parent = TabScroll
 
@@ -1615,8 +1617,8 @@ function Orvion:CreateWindow(config)
     ContentFrame.BackgroundTransparency = 0.999
     ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ContentFrame.BorderSizePixel = 0
-    ContentFrame.Position = UDim2.new(0, 138, 0, 39)
-    ContentFrame.Size = UDim2.new(1, -147, 1, -39)
+    ContentFrame.Position = UDim2.new(0, 0, 0, 83)
+    ContentFrame.Size = UDim2.new(1, 0, 1, -83)
     ContentFrame.Name = "ContentFrame"
     ContentFrame.Parent = Main
     _CFref=ContentFrame
@@ -4295,19 +4297,32 @@ function Orvion:CreateWindow(config)
 
     local function CreateTabButton(tabName, iconId, isConfigTab)
         TabCount = TabCount + 1
-        local Tab = Instance.new("Frame")
+        local Tab = Instance.new("TextButton")
         Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         Tab.BackgroundTransparency = 0.999
-        Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Tab.BorderSizePixel = 0
-        Tab.Size = UDim2.new(1, 0, 0, 30)
+        Tab.AutomaticSize = Enum.AutomaticSize.X
+        Tab.Size = UDim2.new(0, 0, 1, -8)
+        Tab.Text = ""
         Tab.LayoutOrder = isConfigTab and 999 or TabCount
         Tab.Name = "Tab"
         Tab.Parent = TabScroll
 
         local TabCorner = Instance.new("UICorner")
-        TabCorner.CornerRadius = UDim.new(0, 4)
+        TabCorner.CornerRadius = UDim.new(1, 0)
         TabCorner.Parent = Tab
+
+        local TabPillLayout = Instance.new("UIListLayout")
+        TabPillLayout.FillDirection = Enum.FillDirection.Horizontal
+        TabPillLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+        TabPillLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        TabPillLayout.Padding = UDim.new(0, 6)
+        TabPillLayout.Parent = Tab
+
+        local TabPillPad = Instance.new("UIPadding")
+        TabPillPad.PaddingLeft = UDim.new(0, 14)
+        TabPillPad.PaddingRight = UDim.new(0, 14)
+        TabPillPad.Parent = Tab
 
         local TabButton = Instance.new("TextButton")
         TabButton.ZIndex = 10
@@ -4334,8 +4349,9 @@ function Orvion:CreateWindow(config)
         TabNameLabel.BackgroundTransparency = 0.999
         TabNameLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabNameLabel.BorderSizePixel = 0
-        TabNameLabel.Size = UDim2.new(1, 0, 1, 0)
-        TabNameLabel.Position = UDim2.new(0, iconId and iconId ~= "" and 30 or 10, 0, 0)
+        TabNameLabel.AutomaticSize = Enum.AutomaticSize.X
+        TabNameLabel.Size = UDim2.new(0, 0, 1, 0)
+        TabNameLabel.LayoutOrder = 2
         TabNameLabel.Name = "TabName"
         TabNameLabel.Parent = Tab
 
@@ -4389,7 +4405,7 @@ function Orvion:CreateWindow(config)
             end
 
             for _, tabFrame in TabScroll:GetChildren() do
-                if tabFrame:IsA("Frame") and tabFrame.Name == "Tab" then
+                if tabFrame.Name == "Tab" then
                     local chooseFrame = tabFrame:FindFirstChild("ChooseFrame")
                     if chooseFrame then chooseFrame.Visible = false end
                     tabFrame.BackgroundTransparency = 0.999
