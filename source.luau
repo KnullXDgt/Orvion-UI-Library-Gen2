@@ -4351,24 +4351,6 @@ function Orvion:CreateWindow(config)
 
 
 
-        local ChooseFrame = Instance.new("Frame")
-        ChooseFrame.BackgroundColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
-        ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        ChooseFrame.BorderSizePixel = 0
-        ChooseFrame.Position = UDim2.new(0, 0, 0, 9)
-        ChooseFrame.Size = UDim2.new(0, 3, 0, 12)
-        ChooseFrame.Name = "ChooseFrame"
-        ChooseFrame.Parent = Tab
-        ChooseFrame.Visible = false
-
-        local ChooseStroke = Instance.new("UIStroke")
-        ChooseStroke.Color = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
-        ChooseStroke.Thickness = 1.6
-        ChooseStroke.Parent = ChooseFrame
-
-        local ChooseCorner = Instance.new("UICorner")
-        ChooseCorner.Parent = ChooseFrame
-
         table.insert(ConfigSystem.TabElements, Tab)
 
         local TabContentContainer = Instance.new("Frame")
@@ -4401,16 +4383,10 @@ function Orvion:CreateWindow(config)
 
             for _, tabFrame in TabScroll:GetChildren() do
                 if tabFrame:IsA("Frame") and tabFrame.Name == "Tab" then
-                    local chooseFrame = tabFrame:FindFirstChild("ChooseFrame")
-                    if chooseFrame then
-                        chooseFrame.Visible = false
-                    end
-                    tabFrame.BackgroundTransparency = 0.999
                 end
             end
 
             TabContentContainer.Visible = true
-            ChooseFrame.Visible = true
             Tab.BackgroundTransparency = 0.92
             CurrentTab = tabName
             UpdateContentSize()
