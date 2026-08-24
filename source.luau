@@ -2121,6 +2121,12 @@ function Orvion:CreateWindow(config)
         ToggleContent.Size = UDim2.new(1, -100, 0, 12)
         ToggleContent.Name = "ToggleContent"
         ToggleContent.Parent = Toggle
+        if content == nil or content == "" then
+            ToggleTitle.Position = UDim2.new(0, 10, 0.5, 0)
+            ToggleTitle.AnchorPoint = Vector2.new(0, 0.5)
+            ToggleTitle.TextYAlignment = Enum.TextYAlignment.Center
+            ToggleContent.Visible = false
+        end
 
         local textSize =
             TextService:GetTextSize(
@@ -2440,6 +2446,12 @@ function Orvion:CreateWindow(config)
         DropdownContent.Size = UDim2.new(1, -180, 0, 12)
         DropdownContent.Name = "DropdownContent"
         DropdownContent.Parent = Dropdown
+        if content == nil or content == "" then
+            DropdownTitle.Position = UDim2.new(0, 10, 0.5, 0)
+            DropdownTitle.AnchorPoint = Vector2.new(0, 0.5)
+            DropdownTitle.TextYAlignment = Enum.TextYAlignment.Center
+            DropdownContent.Visible = false
+        end
 
         local textSize =
             TextService:GetTextSize(
@@ -3053,6 +3065,12 @@ function Orvion:CreateWindow(config)
         SliderContent.Size = UDim2.new(1, -60, 0, 12)
         SliderContent.Name = "SliderContent"
         SliderContent.Parent = Slider
+        if content == nil or content == "" then
+            SliderTitle.Position = UDim2.new(0, 10, 0.5, 0)
+            SliderTitle.AnchorPoint = Vector2.new(0, 0.5)
+            SliderTitle.TextYAlignment = Enum.TextYAlignment.Center
+            SliderContent.Visible = false
+        end
 
         local textSize =
             TextService:GetTextSize(
@@ -4849,7 +4867,7 @@ function Orvion:CreateWindow(config)
         NL.TextColor3=Color3.fromRGB(240,240,255); NL.TextSize=14; NL.TextXAlignment=Enum.TextXAlignment.Left
         NL.BackgroundTransparency=1; NL.BorderSizePixel=0; NL.Size=UDim2.new(1,-96,0,20); NL.Position=UDim2.new(0,82,0,24); NL.Parent=WC
         local SL=Instance.new("TextLabel"); SL.Font=Enum.Font.GothamBold; SL.Text="Welcome to Orvion Hub"
-        SL.TextColor3=Color3.fromRGB(130,130,155); SL.TextSize=12; SL.TextXAlignment=Enum.TextXAlignment.Left
+        SL.TextColor3=Color3.fromRGB(255,255,255); SL.TextTransparency=0.6; SL.TextSize=12; SL.TextXAlignment=Enum.TextXAlignment.Left
         SL.BackgroundTransparency=1; SL.BorderSizePixel=0; SL.Size=UDim2.new(1,-96,0,16); SL.Position=UDim2.new(0,82,0,50); SL.Parent=WC
     end
 
