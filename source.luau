@@ -4849,7 +4849,8 @@ function Orvion:CreateWindow(config)
     function Window:Show()
         DropShadowHolder.Visible = true
         if CurrentTab and TabSwitchFns[CurrentTab] then
-            task.delay(0.05, TabSwitchFns[CurrentTab])
+            local _sw = TabSwitchFns[CurrentTab]
+            task.spawn(function() task.wait() _sw() end)
         end
         task.spawn(function()
             pcall(function()
