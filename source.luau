@@ -779,7 +779,7 @@ local function setupCloseModal(closeBtn, main, screenGui)
     overlay.Visible = false
     overlay.Parent = main
     local dialog = Instance.new("Frame")
-    dialog.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    dialog.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     dialog.BorderSizePixel = 0
     dialog.AnchorPoint = Vector2.new(0.5, 0.5)
     dialog.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -4427,7 +4427,7 @@ function Orvion:CreateWindow(config)
         end
 
         TabSwitchFns[tabName] = SwitchToTab
-        if TabCount == 1 then SwitchToTab() end
+        if not isConfigTab and not CurrentTab then SwitchToTab() end
 
         Tab.Activated:Connect(
             function()
