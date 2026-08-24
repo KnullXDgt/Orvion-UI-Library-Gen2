@@ -1925,7 +1925,7 @@ function Orvion:CreateWindow(config)
         ParagraphContent.BackgroundTransparency = 0.999
         ParagraphContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ParagraphContent.BorderSizePixel = 0
-        ParagraphContent.Position = UDim2.new(0, 10, 0, 23)
+        ParagraphContent.Position = UDim2.new(0, 10, 0, 29)
         ParagraphContent.Name = "ParagraphContent"
         ParagraphContent.Parent = Paragraph
 
@@ -1999,6 +1999,13 @@ function Orvion:CreateWindow(config)
         ButtonContent.Position = UDim2.new(0, 10, 0, 23)
         ButtonContent.Name = "ButtonContent"
         ButtonContent.Parent = Button
+        -- Dynamic: center title if no content
+        if content == nil or content == "" then
+            ButtonTitle.Position = UDim2.new(0, 10, 0.5, 0)
+            ButtonTitle.AnchorPoint = Vector2.new(0, 0.5)
+            ButtonTitle.TextYAlignment = Enum.TextYAlignment.Center
+            ButtonContent.Visible = false
+        end
 
         local textSize =
             TextService:GetTextSize(
@@ -2010,7 +2017,7 @@ function Orvion:CreateWindow(config)
 
         ButtonContent.Size = UDim2.new(1, -100, 0, textSize.Y)
         ButtonContent.TextWrapped = true
-        Button.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 33))
+        Button.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 39))
 
         local ButtonButton = Instance.new("TextButton")
         ButtonButton.Font = Enum.Font.SourceSans
@@ -2125,7 +2132,7 @@ function Orvion:CreateWindow(config)
 
         ToggleContent.Size = UDim2.new(1, -100, 0, textSize.Y)
         ToggleContent.TextWrapped = true
-        Toggle.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 33))
+        Toggle.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 39))
 
         local ToggleButton = Instance.new("TextButton")
         ToggleButton.Font = Enum.Font.SourceSans
@@ -2444,7 +2451,7 @@ function Orvion:CreateWindow(config)
 
         DropdownContent.Size = UDim2.new(1, -180, 0, textSize.Y)
         DropdownContent.TextWrapped = true
-        Dropdown.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 33))
+        Dropdown.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 39))
 
         local SelectOptionsFrame = Instance.new("Frame")
         SelectOptionsFrame.AnchorPoint = Vector2.new(1, 0.5)
@@ -3074,7 +3081,7 @@ function Orvion:CreateWindow(config)
         ValueDisplay.Name = "ValueDisplay"
         ValueDisplay.Parent = Slider
 
-        Slider.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 33 + 25))
+        Slider.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 39 + 25))
 
         local SliderFrame = Instance.new("Frame")
         SliderFrame.AnchorPoint = Vector2.new(0, 0)
@@ -3082,7 +3089,7 @@ function Orvion:CreateWindow(config)
         SliderFrame.BackgroundTransparency = 0.5
         SliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SliderFrame.BorderSizePixel = 0
-        SliderFrame.Position = UDim2.new(0, 10, 0, textSize.Y + 33)
+        SliderFrame.Position = UDim2.new(0, 10, 0, textSize.Y + 39)
         SliderFrame.Size = UDim2.new(1, -20, 0, 3)
         SliderFrame.Name = "SliderFrame"
         SliderFrame.Parent = Slider
@@ -3321,7 +3328,7 @@ function Orvion:CreateWindow(config)
         ImageBoxContent.TextWrapped = true
 
         local imageSize = size or UDim2.new(0, 100, 0, 100)
-        local totalHeight = textSize.Y + 33 + imageSize.Y.Offset + 10
+        local totalHeight = textSize.Y + 39 + imageSize.Y.Offset + 10
 
         ImageBox.Size = UDim2.new(1, 0, 0, math.max(46, totalHeight))
 
@@ -3330,7 +3337,7 @@ function Orvion:CreateWindow(config)
         ImageContainer.BackgroundTransparency = 0.95
         ImageContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ImageContainer.BorderSizePixel = 0
-        ImageContainer.Position = UDim2.new(0, 10, 0, textSize.Y + 33)
+        ImageContainer.Position = UDim2.new(0, 10, 0, textSize.Y + 39)
         ImageContainer.Size = imageSize
         ImageContainer.Name = "ImageContainer"
         ImageContainer.Parent = ImageBox
@@ -3388,7 +3395,7 @@ function Orvion:CreateWindow(config)
 
         function imageBoxFunc:SetSize(newSize)
             ImageContainer.Size = newSize
-            local newTotalHeight = textSize.Y + 33 + newSize.Y.Offset + 10
+            local newTotalHeight = textSize.Y + 39 + newSize.Y.Offset + 10
             ImageBox.Size = UDim2.new(1, 0, 0, math.max(46, newTotalHeight))
             UpdateContentSize()
         end
@@ -3521,7 +3528,7 @@ function Orvion:CreateWindow(config)
 
         ColorPickerContent.Size = UDim2.new(1, -100, 0, textSize.Y)
         ColorPickerContent.TextWrapped = true
-        ColorPicker.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 33))
+        ColorPicker.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 39))
 
         local ColorPreview = Instance.new("Frame")
         ColorPreview.AnchorPoint = Vector2.new(1, 0.5)
@@ -3998,7 +4005,7 @@ function Orvion:CreateWindow(config)
 
         KeybindContent.Size = UDim2.new(1, -100, 0, textSize.Y)
         KeybindContent.TextWrapped = true
-        Keybind.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 33))
+        Keybind.Size = UDim2.new(1, 0, 0, math.max(46, textSize.Y + 39))
 
         local KeybindFrame = Instance.new("Frame")
         KeybindFrame.AnchorPoint = Vector2.new(1, 0.5)
