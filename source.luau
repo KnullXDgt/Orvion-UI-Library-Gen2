@@ -4838,7 +4838,7 @@ function Orvion:CreateWindow(config)
             local ok,img=pcall(function() return game:GetService("Players"):GetUserThumbnailAsync(LP.UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size150x150) end)
             if ok and img then AI.Image=img end
         end)
-        local NL=Instance.new("TextLabel"); NL.Font=Enum.Font.GothamBold; NL.Text="Hey, "..LP.Name.."!"
+        local NL=Instance.new("TextLabel"); NL.Font=Enum.Font.GothamBold; do local _n=LP.Name; local _m=#_n>3 and _n:sub(1,#_n-3).."***" or "***"; NL.Text="Hey, ".._m.."!" end
         NL.TextColor3=Color3.fromRGB(240,240,255); NL.TextSize=14; NL.TextXAlignment=Enum.TextXAlignment.Left
         NL.BackgroundTransparency=1; NL.BorderSizePixel=0; NL.Size=UDim2.new(1,-96,0,20); NL.Position=UDim2.new(0,82,0,24); NL.Parent=WC
         local SL=Instance.new("TextLabel"); SL.Font=Enum.Font.GothamBold; SL.Text="Welcome to Orvion Hub"
