@@ -886,7 +886,6 @@ function Orvion:CreateWindow(config)
     local Badges = config.Badges or {}
     local Icon = config.Icon or ""
     local TitleImage = config.TitleImage or ""
-    local ConfigData = config.Config or {}
 
     if ConfigSystem.ThemeColors[Theme] then
         ConfigSystem.CurrentTheme = Theme
@@ -895,7 +894,6 @@ function Orvion:CreateWindow(config)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
     ScreenGui.Name = "OrvionUI"
-    ScreenGui.Parent = (gethui and gethui()) or CoreGui
 
     local DropShadowHolder = Instance.new("Frame")
     DropShadowHolder.BackgroundTransparency = 1
@@ -2065,7 +2063,6 @@ function Orvion:CreateWindow(config)
             end
         )
 
-        task.wait(0.1)
         UpdateContentSize()
 
         return Button
@@ -2234,9 +2231,6 @@ function Orvion:CreateWindow(config)
             end
         )
 
-        task.wait(0.1)
-        UpdateContentSize()
-
         local toggleFunc = {
             Value = state,
             _live = function() return state end,
@@ -2269,6 +2263,8 @@ function Orvion:CreateWindow(config)
             AllElements[elementId] = toggleFunc
             table.insert(Orvion._resetCallbacks, function() toggleFunc.Set(false) end)
         end
+
+        UpdateContentSize()
 
         return toggleFunc
     end
@@ -2371,12 +2367,11 @@ function Orvion:CreateWindow(config)
             inputFunc:Set(InputTextBox.Text)
         end)
 
-        task.wait(0.1)
-        UpdateContentSize()
-
         if elementId then
             AllElements[elementId] = inputFunc
         end
+
+        UpdateContentSize()
 
         return inputFunc
     end
@@ -2913,9 +2908,6 @@ function Orvion:CreateWindow(config)
             end
         )
 
-        task.wait(0.1)
-        UpdateContentSize()
-
         local dropdownFunc = {
             Value = dropdownData.Value,
             _data = dropdownData,
@@ -3001,6 +2993,8 @@ function Orvion:CreateWindow(config)
         if elementId then
             AllElements[elementId] = dropdownFunc
         end
+
+        UpdateContentSize()
 
         return dropdownFunc
     end
@@ -3261,9 +3255,6 @@ function Orvion:CreateWindow(config)
             end
         )
 
-        task.wait(0.1)
-        UpdateContentSize()
-
         local sliderFunc = {
             Value = sliderData.Value,
             _data = sliderData,
@@ -3280,6 +3271,8 @@ function Orvion:CreateWindow(config)
         if elementId then
             AllElements[elementId] = sliderFunc
         end
+
+        UpdateContentSize()
 
         return sliderFunc
     end
@@ -3397,9 +3390,6 @@ function Orvion:CreateWindow(config)
             end
         )
 
-        task.wait(0.1)
-        UpdateContentSize()
-
         local imageBoxFunc = {
             ImageId = imageId,
             Type = "ImageBox",
@@ -3421,6 +3411,8 @@ function Orvion:CreateWindow(config)
         if elementId then
             AllElements[elementId] = imageBoxFunc
         end
+
+        UpdateContentSize()
 
         return imageBoxFunc
     end
@@ -3478,7 +3470,6 @@ function Orvion:CreateWindow(config)
             }
         )
 
-        task.wait(0.1)
         UpdateContentSize()
 
         return Divider
@@ -3942,9 +3933,6 @@ function Orvion:CreateWindow(config)
                 ColorPickerFrame:Destroy()
             end
         )
-        task.wait(0.1)
-        UpdateContentSize()
-
         local colorPickerFunc = {
             Value = defaultColor,
             Type = "ColorPicker",
@@ -3959,6 +3947,8 @@ function Orvion:CreateWindow(config)
         if elementId then
             AllElements[elementId] = colorPickerFunc
         end
+
+        UpdateContentSize()
 
         return colorPickerFunc
     end
@@ -4154,9 +4144,6 @@ function Orvion:CreateWindow(config)
             end
         )
 
-        task.wait(0.1)
-        UpdateContentSize()
-
         local keybindFunc = {
             Value = defaultKey,
             Type = "Keybind",
@@ -4171,6 +4158,8 @@ function Orvion:CreateWindow(config)
         if elementId then
             AllElements[elementId] = keybindFunc
         end
+
+        UpdateContentSize()
 
         return keybindFunc
     end
@@ -4229,7 +4218,6 @@ function Orvion:CreateWindow(config)
         makeHalfBtn(btn1Config or {}, 1)
         makeHalfBtn(btn2Config or {}, 2)
 
-        task.wait(0.1)
         UpdateContentSize()
     end
 
@@ -4710,8 +4698,6 @@ function Orvion:CreateWindow(config)
     end)
 
     -- backward compat refs
-    local LoadConfigDropdown = SelectConfigDropdown
-    local DeleteConfigDropdown = SelectConfigDropdown
     
     -- Switch to first tab is handled by Window:Show()
 
@@ -4872,7 +4858,9 @@ function Orvion:CreateWindow(config)
     end
 
     function Window:Show()
+        ScreenGui.Parent = (gethui and gethui()) or CoreGui
         DropShadowHolder.Visible = true
+        task.defer(UpdateContentSize)
         if CurrentTab and TabSwitchFns[CurrentTab] then
             local _sw = TabSwitchFns[CurrentTab]
             task.spawn(function() task.wait() _sw() end)
