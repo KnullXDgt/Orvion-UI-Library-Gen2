@@ -2222,7 +2222,7 @@ function Orvion:CreateWindow(config)
             end
         end
 
-        SetState(state, false)
+        SetState(state, state == true)
 
         ToggleButton.Activated:Connect(
             function()
