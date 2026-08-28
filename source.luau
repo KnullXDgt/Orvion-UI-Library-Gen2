@@ -1793,7 +1793,7 @@ function Orvion:CreateWindow(config)
         ToggleBtn.BackgroundTransparency = 0.15
         ToggleBtn.BorderSizePixel = 0
         ToggleBtn.Size = UDim2.new(0, 40, 0, 40)
-        ToggleBtn.Position = UDim2.new(0, 15, 0.5, -100)
+        ToggleBtn.Position = UDim2.new(0.015, 0, 0.1, 0)
         ToggleBtn.ZIndex = 100
         ToggleBtn.Parent = ScreenGui
 
