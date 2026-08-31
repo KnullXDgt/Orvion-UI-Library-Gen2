@@ -884,7 +884,7 @@ function Orvion:CreateWindow(config)
     local MinimizeButton = config.MinimizeButton or false
     local MinimizeButtonImage = config.MinimizeButton_Image or "rbxassetid://16932740082"
     local Badges = config.Badges or {}
-    local Icon = config.Icon or "rbxassetid://76855608514094"
+    local Icon = config.Icon or ""
     local TitleImage = config.TitleImage or ""
 
     if ConfigSystem.ThemeColors[Theme] then
