@@ -884,7 +884,7 @@ function Orvion:CreateWindow(config)
     local MinimizeButton = config.MinimizeButton or false
     local MinimizeButtonImage = config.MinimizeButton_Image or "rbxassetid://16932740082"
     local Badges = config.Badges or {}
-    local Icon = config.Icon or ""
+    local Icon = config.Icon or "rbxassetid://76855608514094"
     local TitleImage = config.TitleImage or ""
 
     if ConfigSystem.ThemeColors[Theme] then
@@ -1784,7 +1784,7 @@ function Orvion:CreateWindow(config)
 
     -- Floating toggle button (open/close UI)
     local ToggleButtonEnabled = config.ToggleButton or false
-    local ToggleButtonImage   = config.ToggleButton_Image or "rbxassetid://121365062523142"
+    local ToggleButtonImage   = config.ToggleButton_Image or "rbxassetid://111729806826815"
 
     if ToggleButtonEnabled then
         local ToggleBtn = Instance.new("Frame")
