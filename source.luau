@@ -1898,7 +1898,7 @@ function Orvion:CreateWindow(config)
         local ParagraphTitle = Instance.new("TextLabel")
         ParagraphTitle.Font = Enum.Font.GothamBold
         ParagraphTitle.Text = title
-        ParagraphTitle.TextColor3 = Color3.fromRGB(230, 230, 230)
+        ParagraphTitle.TextColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
         ParagraphTitle.TextSize = 14
         ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
         ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
@@ -1916,7 +1916,7 @@ function Orvion:CreateWindow(config)
         ParagraphContent.Text = content
         ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
         ParagraphContent.TextSize = 13
-        ParagraphContent.TextTransparency = 0.6
+        ParagraphContent.TextTransparency = 0
         ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
         ParagraphContent.TextYAlignment = Enum.TextYAlignment.Bottom
         ParagraphContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -3417,6 +3417,37 @@ function Orvion:CreateWindow(config)
         return imageBoxFunc
     end
 
+    -- Transparent accent header for grouping controls inside a section.
+    local function CreateTextHeader(tabContainer, title)
+        if not tabContainer or not tabContainer:IsA("Frame") then
+            return
+        end
+
+        local header = Instance.new("TextLabel")
+        header.BackgroundTransparency = 1
+        header.BorderSizePixel = 0
+        header.Size = UDim2.new(1, 0, 0, 28)
+        header.Font = Enum.Font.GothamBold
+        header.Text = title or ""
+        header.TextColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+        header.TextSize = 15
+        header.TextXAlignment = Enum.TextXAlignment.Left
+        header.TextYAlignment = Enum.TextYAlignment.Center
+        header.Name = "TextHeader"
+        header.Parent = tabContainer
+
+        table.insert(ConfigSystem.ThemeElements, {
+            Update = function(color)
+                if header and header.Parent then
+                    header.TextColor3 = color
+                end
+            end
+        })
+
+        UpdateContentSize()
+        return header
+    end
+
     -- FIXED: Renamed from CreateSection to CreateDivider
     local function CreateDivider(tabContainer, title)
         if not tabContainer or not tabContainer:IsA("Frame") then
@@ -4459,6 +4490,8 @@ function Orvion:CreateWindow(config)
     local CurrentConfigName = ""
     local SelectedConfigName = ""
     local AutoloadFile = ConfigFolder .. "/Autoload.txt"
+    -- Simple lifecycle flag for consumers that must wait for config hydration.
+    local AutoloadState = "Loading"
     local CfgSection = CreateCollapsible(ConfigTabContainer, "Configuration", true)
 
     -- Status header frame with gear icon + two-line status
@@ -4711,6 +4744,10 @@ function Orvion:CreateWindow(config)
     function Window:AddParagraph(tabContainer, title, content)
         return CreateParagraph(tabContainer, title, content)
     end
+
+    function Window:AddTextHeader(tabContainer, title)
+        return CreateTextHeader(tabContainer, title)
+    end
     
     function Window:AddButton(tabContainer, title, content, iconId, callback)
         return CreateButton(tabContainer, title, content, iconId, callback)
@@ -4858,6 +4895,8 @@ function Orvion:CreateWindow(config)
     end
 
     function Window:Show()
+        AutoloadState = "Loading"
+        Window.AutoloadState = AutoloadState
         ScreenGui.Parent = (gethui and gethui()) or CoreGui
         DropShadowHolder.Visible = true
         task.defer(UpdateContentSize)
@@ -4875,9 +4914,6 @@ function Orvion:CreateWindow(config)
                             for id, val in pairs(configData) do
                                 pcall(function()
                                     if AllElements[id] then
-                                        if AllElements[id].Type == "Toggle" and val == false then
-                                            return
-                                        end
                                         if AllElements[id].Type == "ColorPicker" and type(val) == "table" then
                                             AllElements[id]:Set(Color3.new(val[1], val[2], val[3]))
                                         elseif AllElements[id].Type == "Keybind" and val then
@@ -4894,6 +4930,8 @@ function Orvion:CreateWindow(config)
                         end
                     end
                 end
+                AutoloadState = "Ready"
+                Window.AutoloadState = AutoloadState
             end)
         end)
     end
