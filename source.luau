@@ -1806,7 +1806,7 @@ function Orvion:CreateWindow(config)
         TBImg.BackgroundTransparency = 1
         TBImg.Size = UDim2.new(1, 0, 1, 0)
         TBImg.Position = UDim2.new(0, 0, 0, 0)
-        TBImg.ScaleType = Enum.ScaleType.Fit
+        TBImg.ScaleType = Enum.ScaleType.Crop
         TBImg.ZIndex = 101
         TBImg.Active = false      -- jangan intercept input
         TBImg.Parent = ToggleBtn
