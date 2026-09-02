@@ -882,9 +882,9 @@ function Orvion:CreateWindow(config)
     local MinimizeKey = config.MinimizeKey or Enum.KeyCode.RightShift
     if config.ConfigFolder then ConfigFolder = config.ConfigFolder end
     local MinimizeButton = config.MinimizeButton or false
-    local MinimizeButtonImage = config.MinimizeButton_Image or "rbxassetid://16932740082"
+    local MinimizeButtonImage = config.MinimizeButton_Image or "rbxassetid://72413297909576"
     local Badges = config.Badges or {}
-    local Icon = "rbxassetid://76855608514094"
+    local Icon = "rbxassetid://134094946806823"
     local TitleImage = config.TitleImage or ""
 
     if ConfigSystem.ThemeColors[Theme] then
@@ -3437,7 +3437,7 @@ function Orvion:CreateWindow(config)
         header.Parent = tabContainer
 
         local headerPadding = Instance.new("UIPadding")
-        headerPadding.PaddingLeft = UDim.new(0, 12)
+        headerPadding.PaddingLeft = UDim.new(0, 10)
         headerPadding.Parent = header
 
         table.insert(
