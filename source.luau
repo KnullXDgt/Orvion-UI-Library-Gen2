@@ -1784,7 +1784,7 @@ function Orvion:CreateWindow(config)
 
     -- Floating toggle button (open/close UI)
     local ToggleButtonEnabled = config.ToggleButton or false
-    local ToggleButtonImage   = config.ToggleButton_Image or "rbxassetid://111729806826815"
+    local ToggleButtonImage   = config.ToggleButton_Image or "rbxassetid://82595619369662"
 
     if ToggleButtonEnabled then
         local ToggleBtn = Instance.new("Frame")
