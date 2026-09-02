@@ -2180,43 +2180,85 @@ function Orvion:CreateWindow(config)
         table.insert(ConfigSystem.ToggleElements, Toggle)
 
         local state = defaultValue or false
+        local toggleFunc = nil
+
+        -- Gen2 toggle race fix:
+        -- Every state transition owns the active visual tweens. A newer Set/SetState
+        -- cancels older tweens before applying its state, so an old ON tween cannot
+        -- finish after a programmatic OFF and visually force the toggle back ON.
+        local activeTweens = {}
+
+        local function CancelToggleTweens()
+            for i = 1, #activeTweens do
+                local tween = activeTweens[i]
+                if tween then
+                    pcall(function() tween:Cancel() end)
+                end
+            end
+            table.clear(activeTweens)
+        end
+
+        local function ApplyToggleVisual(value, animated)
+            CancelToggleTweens()
+
+            local themeColor = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+            local titleProps
+            local circleProps
+            local frameProps
+
+            if value then
+                titleProps = {TextColor3 = themeColor}
+                circleProps = {
+                    Position = UDim2.new(1, -15, 0.5, -7),
+                    BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                }
+                frameProps = {
+                    BackgroundColor3 = themeColor,
+                    BackgroundTransparency = 0
+                }
+            else
+                titleProps = {TextColor3 = Color3.fromRGB(230, 230, 230)}
+                circleProps = {
+                    Position = UDim2.new(0, 1, 0.5, -7),
+                    BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+                }
+                frameProps = {
+                    BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+                    BackgroundTransparency = 0.2
+                }
+            end
+
+            if animated then
+                local tweenInfo = TweenInfo.new(
+                    0.2,
+                    Enum.EasingStyle.Quad,
+                    Enum.EasingDirection.InOut
+                )
+                activeTweens[1] = TweenService:Create(ToggleTitle, tweenInfo, titleProps)
+                activeTweens[2] = TweenService:Create(ToggleCircle, tweenInfo, circleProps)
+                activeTweens[3] = TweenService:Create(FeatureFrame, tweenInfo, frameProps)
+
+                for i = 1, #activeTweens do
+                    activeTweens[i]:Play()
+                end
+            else
+                for property, value2 in pairs(titleProps) do
+                    ToggleTitle[property] = value2
+                end
+                for property, value2 in pairs(circleProps) do
+                    ToggleCircle[property] = value2
+                end
+                for property, value2 in pairs(frameProps) do
+                    FeatureFrame[property] = value2
+                end
+            end
+        end
 
         local function SetState(value, fireCallback)
-            state = value
-            local themeColor = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
-            if value then
-                TweenService:Create(
-                    ToggleTitle,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-                    {TextColor3 = themeColor}
-                ):Play()
-                TweenService:Create(
-                    ToggleCircle,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-                    {Position = UDim2.new(1, -15, 0.5, -7), BackgroundColor3 = Color3.fromRGB(255, 255, 255)}
-                ):Play()
-                TweenService:Create(
-                    FeatureFrame,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-                    {BackgroundColor3 = themeColor, BackgroundTransparency = 0}
-                ):Play()
-            else
-                TweenService:Create(
-                    ToggleTitle,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-                    {TextColor3 = Color3.fromRGB(230, 230, 230)}
-                ):Play()
-                TweenService:Create(
-                    ToggleCircle,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-                    {Position = UDim2.new(0, 1, 0.5, -7), BackgroundColor3 = Color3.fromRGB(200, 200, 200)}
-                ):Play()
-                TweenService:Create(
-                    FeatureFrame,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-                    {BackgroundColor3 = Color3.fromRGB(60, 60, 60), BackgroundTransparency = 0.2}
-                ):Play()
-            end
+            state = value == true
+            if toggleFunc then toggleFunc.Value = state end
+            ApplyToggleVisual(state, true)
+
             if fireCallback ~= false and callback then
                 callback(state)
             end
@@ -2231,7 +2273,7 @@ function Orvion:CreateWindow(config)
             end
         )
 
-        local toggleFunc = {
+        toggleFunc = {
             Value = state,
             _live = function() return state end,
             Type = "Toggle",
@@ -2239,29 +2281,23 @@ function Orvion:CreateWindow(config)
         }
 
         function toggleFunc:Set(value)
-            state = value
-            local themeColor = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
+            state = value == true
+            toggleFunc.Value = state
+
+            -- Programmatic Set is authoritative and immediate. Most importantly,
+            -- this cancels any click tween that was started before its callback.
             pcall(function()
-                if value then
-                    ToggleTitle.TextColor3 = themeColor
-                    ToggleCircle.Position = UDim2.new(1, -15, 0.5, -7)
-                    ToggleCircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                    FeatureFrame.BackgroundColor3 = themeColor
-                    FeatureFrame.BackgroundTransparency = 0
-                else
-                    ToggleTitle.TextColor3 = Color3.fromRGB(230, 230, 230)
-                    ToggleCircle.Position = UDim2.new(0, 1, 0.5, -7)
-                    ToggleCircle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-                    FeatureFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                    FeatureFrame.BackgroundTransparency = 0.2
-                end
+                ApplyToggleVisual(state, false)
             end)
-            if callback then pcall(callback, value) end
+
+            if callback then
+                pcall(callback, state)
+            end
         end
 
         if elementId then
             AllElements[elementId] = toggleFunc
-            table.insert(Orvion._resetCallbacks, function() toggleFunc.Set(false) end)
+            table.insert(Orvion._resetCallbacks, function() toggleFunc:Set(false) end)
         end
 
         UpdateContentSize()
