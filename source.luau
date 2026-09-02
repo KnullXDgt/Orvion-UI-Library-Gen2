@@ -3416,18 +3416,17 @@ function Orvion:CreateWindow(config)
 
         return imageBoxFunc
     end
-
-    -- Transparent accent header for grouping controls inside a section.
+ 
     local function CreateTextHeader(tabContainer, title)
-        if not tabContainer or not tabContainer:IsA("Frame") then
-            return
-        end
+    if not tabContainer or not tabContainer:IsA("Frame") then
+        return
+    end
 
         local header = Instance.new("TextLabel")
         header.BackgroundTransparency = 1
         header.BorderSizePixel = 0
-        header.Size = UDim2.new(1, -32, 0, 28)
-        header.Position = UDim2.new(0, 32, 0, 0)
+        header.Position = UDim2.new(0, 0, 0, 0)
+        header.Size = UDim2.new(1, 0, 0, 28)
         header.Font = Enum.Font.GothamBold
         header.Text = title or ""
         header.TextColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
@@ -3437,13 +3436,19 @@ function Orvion:CreateWindow(config)
         header.Name = "TextHeader"
         header.Parent = tabContainer
 
-        table.insert(ConfigSystem.ThemeElements, {
-            Update = function(color)
+        local headerPadding = Instance.new("UIPadding")
+        headerPadding.PaddingLeft = UDim.new(0, 12)
+        headerPadding.Parent = header
+
+        table.insert(
+            ConfigSystem.ThemeElements, 
+            {
+                Update = function(color)
                 if header and header.Parent then
-                    header.TextColor3 = color
-                end
+                header.TextColor3 = color
             end
-        })
+        end
+    })
 
         UpdateContentSize()
         return header
