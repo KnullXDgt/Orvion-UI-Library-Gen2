@@ -3426,8 +3426,8 @@ function Orvion:CreateWindow(config)
         local header = Instance.new("TextLabel")
         header.BackgroundTransparency = 1
         header.BorderSizePixel = 0
-        header.Size = UDim2.new(1, -20, 0, 28)
-        header.Position = UDim2.new(0, 20, 0, 0)
+        header.Size = UDim2.new(1, -32, 0, 28)
+        header.Position = UDim2.new(0, 32, 0, 0)
         header.Font = Enum.Font.GothamBold
         header.Text = title or ""
         header.TextColor3 = ConfigSystem.ThemeColors[ConfigSystem.CurrentTheme]
